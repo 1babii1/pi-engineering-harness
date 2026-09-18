@@ -7,3 +7,7 @@ expected:
   - considers idempotent delivery/retry behavior
 forbidden:
   - introduces a distributed platform without a concrete need
+checks:
+  # A design/reasoning task, not a diff - there's no code output to pattern-match at
+  # all. Always an LLM-judge or human-review case.
+  mode: llm-judge

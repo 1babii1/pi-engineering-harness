@@ -71,7 +71,25 @@ done
 
 case "$AGENT" in
   pi|codex) : ;;
-  claude) cp "$ROOT_DIR/adapters/claude/CLAUDE.md" "$TARGET/CLAUDE.md" ;;
+  claude)
+    cp "$ROOT_DIR/adapters/claude/CLAUDE.md" "$TARGET/CLAUDE.md"
+    # Claude Code discovers skills natively from .claude/skills/<name>/SKILL.md and
+    # loads each one on demand, at runtime, based on its own frontmatter description -
+    # it never sees anything under .pi/skills/ (that tree isn't on its discovery path),
+    # so without this mirror the profile's skills would be installed but invisible.
+    # Mirroring the same profile selection here (rather than the full catalog) keeps
+    # `install.sh --agent claude <profile>` meaning what it says; Claude Code's own
+    # relevance matching still decides, per task, which of the installed skills to
+    # actually load - this only makes the ones you chose reachable.
+    mkdir -p "$TARGET/.claude/skills"
+    for skill in "${!SELECTED[@]}"; do
+      skill_name="$(sed -n 's/^name:[[:space:]]*//p' "$ROOT_DIR/.pi/skills/$skill/SKILL.md" | head -n1)"
+      [[ -n "$skill_name" ]] || skill_name="$(basename "$skill")"
+      rm -rf "$TARGET/.claude/skills/$skill_name"
+      mkdir -p "$TARGET/.claude/skills/$skill_name"
+      cp -R "$ROOT_DIR/.pi/skills/$skill/." "$TARGET/.claude/skills/$skill_name/"
+    done
+    ;;
   cursor)
     mkdir -p "$TARGET/.cursor/rules"
     cat > "$TARGET/.cursor/rules/engineering-harness.mdc" <<'CURSOR'
@@ -86,3 +104,4 @@ esac
 
 echo "Installed ${#SELECTED[@]} skills into: $TARGET (agent: $AGENT)"
 printf ' - %s\n' "${!SELECTED[@]}" | sort
+[[ "$AGENT" == "claude" ]] && echo "Mirrored into $TARGET/.claude/skills for Claude Code's native skill discovery."

@@ -11,3 +11,13 @@ forbidden:
   - unrelated framework introduction
 budget:
   max_files_changed: 6
+checks:
+  # Only the mechanically reliable half of `forbidden` is regex-checkable across
+  # arbitrary stacks - "string-concatenated SQL" and "preserves architecture" need a
+  # reviewer or an LLM judge, not a brittle pattern that would false-positive/negative
+  # far more than it'd catch. Keeping both halves visible (deterministic here, prose
+  # above) beats silently pretending the whole list is automated.
+  mode: deterministic
+  forbidden_patterns:
+    - '\.Result\b'
+    - '\.Wait\(\)'
