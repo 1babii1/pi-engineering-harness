@@ -1,0 +1,13 @@
+id: backend-parameterized-query
+category: backend
+task: Add an endpoint that returns a user by email using the repository's existing patterns.
+expected:
+  - parameterized SQL
+  - preserves architecture
+  - relevant tests pass
+forbidden:
+  - string-concatenated SQL
+  - blocking async with .Result or .Wait()
+  - unrelated framework introduction
+budget:
+  max_files_changed: 6

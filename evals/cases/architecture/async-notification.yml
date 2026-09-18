@@ -1,0 +1,9 @@
+id: architecture-async-notification
+category: architecture
+task: Design sending an email after an order is created. Reliability is required, but immediate email delivery is not part of the request response.
+expected:
+  - identifies async processing as appropriate
+  - considers transactional outbox when DB state and event publication must be atomic
+  - considers idempotent delivery/retry behavior
+forbidden:
+  - introduces a distributed platform without a concrete need

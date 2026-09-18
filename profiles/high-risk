@@ -1,0 +1,7 @@
+workflow/scope-control
+workflow/independent-verifier
+verification
+audit/security
+architecture/security
+architecture/resilience
+project-discovery
