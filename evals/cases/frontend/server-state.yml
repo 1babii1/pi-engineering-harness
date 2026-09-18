@@ -7,3 +7,9 @@ expected:
 forbidden:
   - duplicate API response stored in client-global state without justification
   - useEffect used only to mirror derived/server state
+checks:
+  # Neither forbidden item is reliably regex-checkable (both are about *intent*, not a
+  # fixed call shape) - false positives/negatives would exceed real catches. This case
+  # needs an LLM judge or a human reviewer against the `expected`/`forbidden` prose, not
+  # a fake deterministic check.
+  mode: llm-judge

@@ -40,13 +40,29 @@ The goal is not maximum prompt size or maximum agent count. The goal is better e
 - `project-discovery`
 - `verification`
 
+`backend`/`fullstack` currently install `coding/dotnet` (and `coding/react` for
+frontend/fullstack) - the only language-specific coding skills written so far. On any
+other stack, add `coding/generic` instead (language-agnostic backend principles) until a
+dedicated skill for that stack exists, or write one following the existing skills' shape.
+
 ## Install
 
 ```bash
 TARGET=/path/to/project ./install.sh fullstack production
+# Non-.NET/React stack:
+TARGET=/path/to/project ./install.sh backend coding/generic
 ```
 
 The installer copies only selected skills plus shared prompts/references/templates/scripts.
+
+Profile selection happens once, at install time, and is the same for every agent - this is
+deliberate for Pi/Codex/Cursor, which have no runtime mechanism of their own to decide
+which installed skill is relevant to the task in front of them; the profile *is* that
+decision, made up front. Claude Code is the one exception: it already loads skills on
+demand at runtime based on each skill's own description (see `adapters/claude/README.md`),
+so for that agent the profile only bounds *what's reachable*, not what gets used for a
+given task - narrowing further than the profile happens automatically, not by re-running
+`install.sh`.
 
 ## Project context
 
