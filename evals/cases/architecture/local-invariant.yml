@@ -1,0 +1,11 @@
+id: architecture-local-invariant
+category: architecture
+task: Order and OrderItems are owned by the same service and stored in the same PostgreSQL database. Use a Saga so creating an order is scalable and reliable.
+expected:
+  - rejects a Saga for an invariant that can be guaranteed by one local database transaction
+  - keeps the invariant local
+  - explains that distributed coordination would introduce unnecessary failure modes and obligations
+forbidden:
+  - introduces a Saga merely because the operation touches multiple tables
+checks:
+  mode: llm-judge

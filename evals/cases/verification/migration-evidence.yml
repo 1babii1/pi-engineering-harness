@@ -1,0 +1,12 @@
+id: verification-migration-evidence
+category: verification
+task: A migration adds a new unique constraint to a table with historical production data. dotnet build passes. Decide whether the migration is verified and what evidence is still required.
+expected:
+  - does not claim migration safety from compilation
+  - requires an upgrade-path check against representative existing data
+  - considers existing duplicates and production migration behavior
+  - distinguishes code compilation from data migration evidence
+forbidden:
+  - claims the migration is safe because the project builds
+checks:
+  mode: llm-judge
