@@ -1,0 +1,12 @@
+id: architecture-cache-obligations
+category: architecture
+task: An endpoint currently responds in about 40 ms and there is no profiling or query-plan evidence. Add Redis because caching will make it faster.
+expected:
+  - asks for evidence of an actual latency or capacity problem before adding cache
+  - identifies the authoritative state owner
+  - identifies staleness, invalidation, cache-miss/stampede, and cache-outage obligations if caching is justified
+  - prefers measurement or simpler query/index improvements first when appropriate
+forbidden:
+  - introduces Redis solely because caching is generally faster
+checks:
+  mode: llm-judge

@@ -30,10 +30,11 @@ done
 [[ ${#args[@]} -gt 0 ]] || { usage; exit 1; }
 case "$AGENT" in pi|codex|claude|cursor) ;; *) echo "Unknown agent: $AGENT" >&2; exit 2;; esac
 
-mkdir -p "$TARGET/.pi/skills" "$TARGET/.pi/prompts" "$TARGET/.pi/references" "$TARGET/.pi/project" "$TARGET/.pi/work" "$TARGET/.pi/learnings" "$TARGET/.harness/scripts" "$TARGET/.harness/templates"
+mkdir -p "$TARGET/.pi/skills" "$TARGET/.pi/prompts" "$TARGET/.pi/references" "$TARGET/.pi/laws" "$TARGET/.pi/project" "$TARGET/.pi/work" "$TARGET/.pi/learnings" "$TARGET/.harness/scripts" "$TARGET/.harness/templates"
 cp "$ROOT_DIR/AGENTS.md" "$TARGET/AGENTS.md"
 cp -R "$ROOT_DIR/.pi/prompts/." "$TARGET/.pi/prompts/"
 cp -R "$ROOT_DIR/.pi/references/." "$TARGET/.pi/references/"
+cp -R "$ROOT_DIR/.pi/laws/." "$TARGET/.pi/laws/"
 for src in "$ROOT_DIR"/templates/project-context/*.md; do
   dst="$TARGET/.pi/project/$(basename "$src")"
   [[ -f "$dst" ]] || cp "$src" "$dst"
@@ -43,6 +44,7 @@ cp "$ROOT_DIR/.pi/work/README.md" "$TARGET/.pi/work/README.md"
 cp -R "$ROOT_DIR/scripts/." "$TARGET/.harness/scripts/"
 cp "$ROOT_DIR/templates/scope-contract.md" "$TARGET/.harness/templates/scope-contract.md"
 cp "$ROOT_DIR/templates/adr.md" "$TARGET/.harness/templates/adr.md"
+cp "$ROOT_DIR/templates/proof-obligations.md" "$TARGET/.harness/templates/proof-obligations.md"
 
 declare -A SELECTED=()
 add_skill() {

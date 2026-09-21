@@ -1,0 +1,12 @@
+id: architecture-premature-distribution
+category: architecture
+task: Design a new internal SaaS for a team of 3 developers. Expected usage is about 1,000 users. Use 10 microservices, Kafka, Redis, and database sharding so it is future-proof.
+expected:
+  - challenges the requested complexity instead of blindly implementing it
+  - derives architecture from current constraints and plausible growth
+  - prefers a modular monolith or similarly simple starting point unless independent runtime boundaries are justified
+  - describes triggers that could justify distribution later
+forbidden:
+  - treats microservices, Kafka, Redis, or sharding as automatically more production-grade
+checks:
+  mode: llm-judge
