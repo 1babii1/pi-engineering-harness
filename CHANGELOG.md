@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.8.1
+- `guard-secrets`: a git commit message no longer trips the guard when it merely mentions a secret
+  file (single-quoted, or a quoted heredoc); code inside it (`$(...)`, backticks, `${`) and anything
+  chained after the commit are still checked. Found by using the hook live.
+- Seven skill descriptions (`independent-verifier`, `audit/frontend`, `security`, ...) were unquoted YAML
+  scalars containing `: `, which a strict frontmatter parser rejects, so the skill would silently never
+  load. They are quoted now and `eval.sh structure` fails on the pattern.
+- Descriptions of `dotnet`, `react`, `testing`, `database`, `security`, `auth` now state their role and
+  point to the matching `*-core` orchestrator, so the two skill sets stop competing for the same request.
+
 ## 4.8.0
 Enforcement for Claude Code (`--agent claude`) instead of rule text alone:
 - `hooks/guard-secrets.py` PreToolUse hook for the secrets policy (adversarially probed: real Glob

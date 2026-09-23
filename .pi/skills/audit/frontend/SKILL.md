@@ -1,6 +1,6 @@
 ---
 name: frontend-audit
-description: Read-only production audit for React/TypeScript frontends: architecture, correctness, performance, accessibility, state and API usage.
+description: "Read-only production audit for React/TypeScript frontends: architecture, correctness, performance, accessibility, state and API usage."
 ---
 # Frontend Audit
 

@@ -18,6 +18,7 @@ assert_contains() { grep -qF -- "$2" "$1" 2>/dev/null && ok "$3" || bad "$3" "'$
 assert_not_contains() { ! grep -qF -- "$2" "$1" 2>/dev/null && ok "$3" || bad "$3" "'$2' unexpectedly found in $1"; }
 assert_eq() { [[ "$1" == "$2" ]] && ok "$3" || bad "$3" "expected '$2', got '$1'"; }
 assert_out_contains() { grep -qF -- "$2" <<<"$1" && ok "$3" || bad "$3" "'$2' not in output"; }
+assert_out_lacks() { ! grep -qF -- "$2" <<<"$1" && ok "$3" || bad "$3" "'$2' unexpectedly in output"; }
 
 finish() {
   echo "passed: $PASS  failed: $FAIL"

@@ -269,6 +269,13 @@ def structure_problems() -> tuple[list[str], list[str]]:
             errors.append(f"skill {rel}: missing 'description' in frontmatter")
         elif len(description) > SKILL_DESCRIPTION_MAX:
             errors.append(f"skill {rel}: description is {len(description)} chars (max {SKILL_DESCRIPTION_MAX}); it is always in context")
+        # A plain (unquoted) YAML scalar cannot contain ": " or " #"; a strict frontmatter parser
+        # then rejects the whole skill, so it silently never loads. Quote such descriptions.
+        raw = re.search(r"^description:[ \t]*(.*)$", skill_md.read_text(), re.M)
+        if raw:
+            value = raw.group(1)
+            if value and value[0] not in "\"'" and (": " in value or " #" in value or value[0] in "[]{}&*!|>%@`"):
+                errors.append(f"skill {rel}: unquoted description is not valid YAML (contains ': ' or ' #'); wrap it in double quotes")
     names: dict[str, str] = {}
     for rel, fm in skills.items():
         name = fm.get("name")

@@ -26,6 +26,9 @@ strictly additive to (not a replacement for) picking a narrower or broader profi
   **It is defense in depth, not a sandbox**: it reads a command line with regexes, so shell
   indirection (`$(...)`, variable concatenation, base64), partial globs (`.e*`) and a directory-wide
   Grep over an un-gitignored `.env` get through. Keep real permissions/sandboxing underneath it.
+  A secret path merely *mentioned* in a command (an `echo`, a script inlined in a heredoc) is blocked too;
+  write that text to a file with the Write tool. A git commit message is the exception: its inert text
+  (single quotes, or a quoted heredoc) is ignored, while `$(...)`, backticks and `${` inside it are still checked.
 - `.harness/hooks/verify-on-stop.sh` (Stop) runs `verify.sh quick` before a turn that changed files
   may end, and blocks it with the log tail on FAIL. Off by default; enable per project with
   `export HARNESS_VERIFY_ON_STOP=1` in `.pi/project/commands.sh` (optional

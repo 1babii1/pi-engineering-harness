@@ -1,6 +1,6 @@
 ---
 name: independent-verifier
-description: Use for high-risk work: auth, credentials, payments, migrations, concurrency, public contracts, distributed coordination, production infrastructure, destructive operations (see .pi/laws/signals.md "High risk").
+description: "Use for high-risk work: auth, credentials, payments, migrations, concurrency, public contracts, distributed coordination, production infrastructure, destructive operations (see .pi/laws/signals.md \"High risk\")."
 ---
 # Independent Verifier
 

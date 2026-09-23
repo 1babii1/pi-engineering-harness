@@ -151,6 +151,12 @@ printf -- '---\nname: broken\n---\n# no description\n' > "$H/.pi/skills/coding/t
 out="$(run_in structure)"; assert_out_contains "$out" "missing 'description'" "structure: a skill without a description is flagged"
 cp "$ROOT_DIR/.pi/skills/coding/testing/SKILL.md" "$H/.pi/skills/coding/testing/SKILL.md"
 
+printf -- '---\nname: testing\ndescription: Use for tests: unquoted colon breaks strict YAML.\n---\n# x\n' > "$H/.pi/skills/coding/testing/SKILL.md"
+out="$(run_in structure)"; assert_out_contains "$out" "not valid YAML" "structure: an unquoted description containing ': ' is flagged"
+printf -- '---\nname: testing\ndescription: "Use for tests: quoted colon is fine."\n---\n# x\n' > "$H/.pi/skills/coding/testing/SKILL.md"
+out="$(run_in structure)"; assert_out_lacks "$out" "not valid YAML" "structure: a quoted description containing ': ' is accepted"
+cp "$ROOT_DIR/.pi/skills/coding/testing/SKILL.md" "$H/.pi/skills/coding/testing/SKILL.md"
+
 chmod -x "$H/install.sh"
 out="$(run_in structure)"; assert_out_contains "$out" "install.sh is not executable" "structure: a non-executable script is flagged"
 chmod +x "$H/install.sh"

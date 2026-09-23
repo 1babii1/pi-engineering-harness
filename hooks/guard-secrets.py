@@ -16,8 +16,9 @@ Policy notes: only `.env.example` is readable, so `.env.sample` / `.env.template
 
 Known gaps, by design (a regex cannot close them): shell indirection (`cat $(echo .en)v`, variable
 concatenation, base64), brace/partial globs (`.en{v,x}`, `.e*`), and a directory-wide Grep that
-happens to search an un-gitignored `.env`. Files named in a command are also blocked when merely
-mentioned (`git commit -m "..., .env, ..."`); the message tells the model to rephrase.
+happens to search an un-gitignored `.env`. A secret path is also blocked when merely mentioned in a
+command (an `echo`, a script inlined in a heredoc); put such text in a file with the Write tool. The
+one exception is a git commit message, whose inert text is ignored (see strip_commit_messages).
 
 Standard library only, matching the rest of this harness's tooling (see evals/run.py).
 """
@@ -146,10 +147,45 @@ def check_paths(tool_name: str, tool_input: dict, deny_patterns: list[str]) -> s
     return None
 
 
+_COMMIT_M = re.compile(r"(\bgit\b[^;&|\n]*?\bcommit\b[^;&|\n]*?\s-m\s*)(\"[^\"]*\"|'[^']*')", re.S)
+_COMMIT_HEREDOC = re.compile(
+    r"(\bgit\b[^;&|\n]*?\bcommit\b[^;&|\n<]*<<-?\s*(['\"]?)(\w+)\2[^\n]*\n)(.*?)(\n\s*\3\b)", re.S
+)
+# Text the shell would still execute inside double quotes or an unquoted heredoc.
+_EXPANDS = re.compile(r"\$\(|`|\$\{")
+
+
+def strip_commit_messages(command: str) -> str:
+    """Drop the message text of `git commit -m '...'` / `git commit -F - <<'EOF' ... EOF`.
+
+    A commit message is data, not a file access, and describing secrets handling in one is normal
+    ("document how the env file is loaded"). Only inert message text is removed: single-quoted
+    messages, and heredoc bodies with a quoted delimiter. A double-quoted message or an unquoted
+    heredoc that contains `$(`, a backtick or `${` still runs code, so it stays under inspection
+    (`git commit -m "$(cat <secret>)"` is blocked). Everything else in the command line, including
+    anything chained after the commit, is always checked.
+    """
+
+    def heredoc(m: re.Match) -> str:
+        quoted = bool(m.group(2))
+        if not quoted and _EXPANDS.search(m.group(4)):
+            return m.group(0)
+        return m.group(1) + "x" + m.group(5)
+
+    def dash_m(m: re.Match) -> str:
+        msg = m.group(2)
+        if msg[0] == '"' and _EXPANDS.search(msg):
+            return m.group(0)
+        return m.group(1) + "x"
+
+    return _COMMIT_M.sub(dash_m, _COMMIT_HEREDOC.sub(heredoc, command))
+
+
 def check_bash(tool_input: dict, deny_patterns: list[str]) -> str | None:
     command = tool_input.get("command")
     if not isinstance(command, str):
         return None
+    command = strip_commit_messages(command)
     # Direct-path reads inside a shell command (cat .env, --file=.env, git show HEAD:.env,
     # $(cat .env), ...). Tokens are split on shell delimiters and on `= : , { } $ ( )`.
     for token in re.findall(r"[^\s;&|'\"><()`=:,{}$]+", command):

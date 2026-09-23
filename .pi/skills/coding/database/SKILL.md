@@ -1,6 +1,6 @@
 ---
 name: database-postgres
-description: Use for PostgreSQL, Npgsql, Dapper, PostGIS, SQL design, indexes, transactions, and query reviews.
+description: "Use for PostgreSQL, Npgsql, Dapper, and EF Core rules: SQL design, indexes and ORDER BY direction, migrations, transactions, query reviews. Whole data-layer work (caching, backups, PII retention, tenancy) belongs to `data-core`."
 ---
 # PostgreSQL / Dapper / PostGIS
 

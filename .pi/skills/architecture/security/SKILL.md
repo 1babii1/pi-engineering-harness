@@ -1,6 +1,6 @@
 ---
 name: security
-description: Use for authentication, authorization, secrets, input boundaries, OWASP concerns, and security reviews.
+description: "Use for security review rules: input boundaries, secrets handling, OWASP concerns, security reviews. Authentication and authorization flows belong to `auth-service` (defect checks) and `auth-core` (design and hardening)."
 ---
 # Security
 

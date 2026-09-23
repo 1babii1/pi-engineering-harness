@@ -1,6 +1,6 @@
 ---
 name: auth-service
-description: Use when designing, changing, or reviewing authentication/authorization/account services - login, registration, password reset, MFA/passkeys, sessions, OAuth2/OIDC tokens (incl. OpenIddict), external identity providers, key rotation, email change, account deletion.
+description: Use when designing, changing, or reviewing authentication/authorization/account services - login, registration, password reset, MFA/passkeys, sessions, OAuth2/OIDC tokens (incl. OpenIddict), external identity providers, key rotation, email change, account deletion. Owns the defect checks; `auth-core` owns the design workflow.
 ---
 # Auth Service Blueprint
 
