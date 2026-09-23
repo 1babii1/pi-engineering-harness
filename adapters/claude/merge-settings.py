@@ -18,7 +18,8 @@ from pathlib import Path
 
 
 def commands(entry: dict) -> set[str]:
-    return {h.get("command") for h in entry.get("hooks", []) if isinstance(h, dict)}
+    inner = entry.get("hooks")
+    return {h.get("command") for h in inner if isinstance(h, dict)} if isinstance(inner, list) else set()
 
 
 def merge(existing: dict, harness: dict) -> dict:

@@ -90,6 +90,36 @@ BADX="$(new_dir)"; mkdir -p "$BADX/.pi/project"; printf '(unclosed\n' > "$BADX/.
 rc=0; ( cd "$BADX" && printf '%s' "$(tool Read '{"file_path":".env"}')" | python3 "$ROOT_DIR/hooks/guard-secrets.py" >/dev/null 2>&1 ) || rc=$?
 assert_eq "$rc" "2" "an invalid project pattern is ignored and the defaults still block"
 
+# --- regressions from the independent verification (each was an allowed bypass) ---------------
+assert_blocked "$(tool Bash '{"command":"cat .env.*"}')" "blocks bash glob .env.*"
+assert_blocked "$(tool Bash '{"command":"rg x -g \".env.*\""}')" "blocks rg -g .env.*"
+assert_blocked "$(tool Grep '{"pattern":"x","glob":".env.*"}')" "blocks Grep glob .env.*"
+assert_blocked "$(tool Grep '{"pattern":"x","glob":"**/.env.*"}')" "blocks Grep glob **/.env.*"
+assert_blocked "$(tool Grep '{"pattern":"x","glob":"*.enc.*"}')" "blocks Grep glob *.enc.*"
+assert_blocked "$(tool Glob '{"pattern":"**/.env.*"}')" "blocks Glob **/.env.*"
+assert_blocked "$(tool Bash '{"command":"(cat .env)"}')" "blocks a path followed by ) "
+assert_blocked "$(tool Bash '{"command":"echo $(cat .env)"}')" "blocks a literal path inside \$( )"
+assert_blocked "$(tool Bash '{"command":"echo `cat .env`"}')" "blocks a literal path inside backticks"
+assert_blocked "$(tool Bash '{"command":"cat --file=.env"}')" "blocks --flag=.env"
+assert_blocked "$(tool Bash '{"command":"docker run --env-file=.env x"}')" "blocks --env-file=.env"
+assert_blocked "$(tool Bash '{"command":"git show HEAD:.env"}')" "blocks git show REV:.env"
+assert_blocked "$(tool Bash '{"command":"git show HEAD:.env.local"}')" "blocks git show REV:.env.local"
+for w in "sudo env" "time env" "command env" "exec env" "nohup env" "/usr/bin/env" 'bash -c "env"' "export" "declare -p" "env | sort" "env -0"; do
+  assert_blocked "$(tool Bash "$(python3 -c 'import json,sys;print(json.dumps({"command":sys.argv[1]}))' "$w")")" "blocks env dump form: $w"
+done
+assert_blocked "$(tool Read '{"file_path":".envrc"}')" "blocks .envrc (direnv usually exports secrets)"
+assert_allowed "$(tool Bash '{"command":"env FOO=1 dotnet run"}')" "allows env running a command (not a dump)"
+assert_allowed "$(tool Bash '{"command":"export FOO=bar"}')" "allows export with an assignment"
+assert_allowed "$(tool Bash '{"command":"docker run --env-file=.env.example x"}')" "allows --env-file=.env.example"
+assert_allowed "$(tool Bash '{"command":"git show HEAD:.env.example"}')" "allows git show REV:.env.example"
+assert_allowed "$(tool Bash '{"command":"git show HEAD:src/environment.ts"}')" "allows git show of an unrelated file"
+
+# --- project root: patterns load from $CLAUDE_PROJECT_DIR even when cwd is a subdirectory -------
+SUB="$(new_dir)"; mkdir -p "$SUB/.pi/project" "$SUB/deep/er"
+printf '(^|/)credentials\\.json$\n' > "$SUB/.pi/project/secret-patterns.txt"
+rc=0; ( cd "$SUB/deep/er" && printf '%s' "$(tool Read '{"file_path":"credentials.json"}')" | CLAUDE_PROJECT_DIR="$SUB" python3 "$ROOT_DIR/hooks/guard-secrets.py" >/dev/null 2>&1 ) || rc=$?
+assert_eq "$rc" "2" "project patterns are found via CLAUDE_PROJECT_DIR from a subdirectory"
+
 # --- project-owned extension file ------------------------------------------------------------
 EXT="$(new_dir)"; mkdir -p "$EXT/.pi/project"
 printf '# comment\n\n(^|/)credentials\\.json$\n' > "$EXT/.pi/project/secret-patterns.txt"

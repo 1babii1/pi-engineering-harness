@@ -91,4 +91,27 @@ rc=0
 ( cd "$T7" && HARNESS_VERIFY_ON_STOP_TIMEOUT=1 bash -c 'printf "{}" | "'"$HOOK"'"' >/tmp/stop-hook.out 2>/tmp/stop-hook.err ) || rc=$?
 assert_eq "$rc" "0" "a hung verify.sh times out and does not block (surfaces a warning instead)"
 
+# --- regressions from the independent verification ---------------------------------------------
+T8="$(new_repo)"
+enable_repo "$T8" fail
+mkdir -p "$T8/sub/dir"; echo x > "$T8/sub/dir/f.txt"
+rc=0; ( cd "$T8/sub/dir" && printf '{}' | CLAUDE_PROJECT_DIR="$T8" "$HOOK" >/dev/null 2>&1 ) || rc=$?
+assert_eq "$rc" "2" "run from a subdirectory, the hook still verifies via CLAUDE_PROJECT_DIR"
+
+T9="$(new_repo)"
+enable_repo "$T9" pass
+printf 'export HARNESS_VERIFY_ON_STOP=1\nexport HARNESS_VERIFY_SCRIPT="%s/fake-verify.sh"\nfalse\necho "$UNSET_VAR_XYZ"\n' "$T9" > "$T9/.pi/project/commands.sh"
+git -C "$T9" add -A; git -C "$T9" -c user.email=t@t -c user.name=t commit -q -m cmds
+echo x > "$T9/new-file.txt"
+rc="$(run_hook "$T9")"
+assert_eq "$rc" "0" "a commands.sh that fails or uses unset vars does not kill the hook"
+
+T10="$(new_repo)"
+enable_repo "$T10" pass
+rm -f "$T10/fake-verify.sh"
+echo x > "$T10/new-file.txt"
+rc="$(run_hook "$T10")"
+assert_eq "$rc" "0" "a missing verify script warns instead of blocking"
+assert_contains "/tmp/stop-hook.err" "not found" "the missing-script warning is shown"
+
 finish

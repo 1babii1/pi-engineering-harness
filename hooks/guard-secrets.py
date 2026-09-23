@@ -11,6 +11,9 @@ base64, a wrapper script). It catches the direct, common cases - accidentally or
 `.env`, an age key, a SOPS vault - the same class of mistake the project's own secrets policy
 exists to prevent. It is not a substitute for OS-level permissions or a sandboxed runtime.
 
+Policy notes: only `.env.example` is readable, so `.env.sample` / `.env.template` are blocked too
+(rename or extend the allow-list); `.envrc` (direnv) is blocked because it usually exports secrets.
+
 Known gaps, by design (a regex cannot close them): shell indirection (`cat $(echo .en)v`, variable
 concatenation, base64), brace/partial globs (`.en{v,x}`, `.e*`), and a directory-wide Grep that
 happens to search an un-gitignored `.env`. Files named in a command are also blocked when merely
@@ -21,6 +24,7 @@ Standard library only, matching the rest of this harness's tooling (see evals/ru
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -35,6 +39,7 @@ ALLOW_PATTERNS = [
 # one Python regex per line, '#' comments and blank lines ignored.
 DEFAULT_DENY_PATTERNS = [
     r"(^|/)\.env(\.[^/]+)?$",          # .env, .env.local, .env.production, ... (.env.example is allow-listed above)
+    r"(^|/)\.envrc$",                   # direnv: usually exports secrets
     r"\.enc\.(json|ya?ml)$",           # SOPS-encrypted vaults
     r"(^|/)age/keys\.txt$",             # e.g. ~/.config/sops/age/keys.txt
     r"\.agekey$",
@@ -48,10 +53,13 @@ DEFAULT_DENY_PATTERNS = [
 
 # Bash commands that read environment/secret state directly, regardless of path arguments.
 BASH_DENY_PATTERNS = [
-    r"(^|[;&|(]\s*)([A-Za-z_]\w*=\S*\s+)*env\b(?!\s*-i)",  # `env`, `FOO=1 env` (env -i is a sandboxing idiom, not a leak)
+    # `env` used as a dump: nothing (or only -0/--null) follows it. `env FOO=1 cmd` / `env -i cmd` run a
+    # command and are fine. Wrappers (sudo, time, ...), an absolute path and quotes (bash -c "env") count.
+    r"(^|[;&|(\"'`]\s*)(sudo\s+|time\s+|command\s+|exec\s+|nohup\s+)*([A-Za-z_]\w*=\S*\s+)*(/\S*/)?env(\s+(-0|--null))*\s*($|[;&|)\"'`])",
     r"\bprintenv\b",
+    r"(^|[;&|(\"'`]\s*)export\s*($|[;&|)\"'`])",   # bare `export` lists everything, like export -p
     r"\bexport\s+-p\b",
-    r"\bdeclare\s+-[a-zA-Z]*x",
+    r"\bdeclare\s+-[a-zA-Z]*[xp]",
     r"(^|[;&|(]\s*)set\s*($|[;&|)])",        # bare `set` dumps every variable
     r"/proc/[^\s/]+/environ",
 ]
@@ -63,10 +71,11 @@ SEARCH_INPUT_KEYS = ("glob",)
 
 
 def load_patterns() -> list[str]:
-    # Project-owned extension file, relative to the project root (Claude Code runs hooks there).
+    # Project-owned extension file at the project root ($CLAUDE_PROJECT_DIR, else the hook's cwd).
     # It lives under .pi/project/ because the installer never overwrites that directory, unlike
     # .harness/hooks/, which is refreshed on every install.
-    extra_file = Path.cwd() / ".pi" / "project" / "secret-patterns.txt"
+    project_root = Path(os.environ.get("CLAUDE_PROJECT_DIR") or Path.cwd())
+    extra_file = project_root / ".pi" / "project" / "secret-patterns.txt"
     extra: list[str] = []
     if extra_file.is_file():
         for line in extra_file.read_text().splitlines():
@@ -81,6 +90,17 @@ def load_patterns() -> list[str]:
                 continue
             extra.append(line)
     return DEFAULT_DENY_PATTERNS + extra
+
+
+def glob_candidates(text: str) -> list[str]:
+    """Concrete names a glob could stand for: every wildcard run replaced by one filler.
+
+    Deny patterns are anchored to exact filenames, so `**/.env.*` must be tested as `**/.env.x`
+    and `*.enc.*` as `json.enc.json`; `.env*` as `.env`. Text without wildcards is returned as is.
+    """
+    if not re.search(r"[*?]", text):
+        return [text]
+    return [re.sub(r"[*?]+", filler, text) for filler in ("", "x", "json", "yaml")]
 
 
 def is_allowed(text: str) -> bool:
@@ -100,7 +120,7 @@ def check_paths(tool_name: str, tool_input: dict, deny_patterns: list[str]) -> s
     if tool_name == "Glob" and isinstance(tool_input.get("pattern"), str):
         # Glob's `pattern` IS a path glob ("**/.env*"). Grep's `pattern` is search text and is
         # deliberately not checked.
-        values.append(tool_input["pattern"].rstrip("*?"))
+        values.extend(glob_candidates(tool_input["pattern"]))
     for key in FILE_INPUT_KEYS:
         v = tool_input.get(key)
         if isinstance(v, str):
@@ -108,10 +128,7 @@ def check_paths(tool_name: str, tool_input: dict, deny_patterns: list[str]) -> s
     for key in SEARCH_INPUT_KEYS:
         v = tool_input.get(key)
         if isinstance(v, str):
-            # Deny patterns are anchored ($) for exact filenames; a glob's own trailing wildcard
-            # (e.g. "**/.env*") would sit after the match and defeat that anchor, so strip glob
-            # wildcard characters from the end before testing - "**/.env*" -> "**/.env".
-            values.append(v.rstrip("*?"))
+            values.extend(glob_candidates(v))
     # MultiEdit-style batch edits.
     for edit in tool_input.get("edits", []) if isinstance(tool_input.get("edits"), list) else []:
         if isinstance(edit, dict) and isinstance(edit.get("file_path"), str):
@@ -130,15 +147,16 @@ def check_bash(tool_input: dict, deny_patterns: list[str]) -> str | None:
     command = tool_input.get("command")
     if not isinstance(command, str):
         return None
-    # Direct-path reads inside a shell command (cat .env, grep ... .env, etc.).
-    for token in re.findall(r"[^\s;&|'\"><]+", command):
-        # `cat .env*`: the glob's own trailing wildcard would defeat the `$` anchors (see check_paths).
-        token = token.rstrip("*?")
-        if is_allowed(token):
+    # Direct-path reads inside a shell command (cat .env, --file=.env, git show HEAD:.env,
+    # $(cat .env), ...). Tokens are split on shell delimiters and on `= : , { } $ ( )`.
+    for token in re.findall(r"[^\s;&|'\"><()`=:,{}$]+", command):
+        candidates = glob_candidates(token)   # `cat .env.*` -> also tested as `.env.x`
+        if all(is_allowed(c) for c in candidates):
             continue
-        hit = matches_any(token, deny_patterns)
-        if hit:
-            return f"command references '{token}', matching secret pattern: {hit}"
+        for candidate in candidates:
+            hit = matches_any(candidate, deny_patterns)
+            if hit and not is_allowed(candidate):
+                return f"command references '{token}', matching secret pattern: {hit}"
     hit = matches_any(command, BASH_DENY_PATTERNS)
     if hit:
         return f"command matches disallowed pattern: {hit}"

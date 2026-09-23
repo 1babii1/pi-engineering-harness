@@ -164,6 +164,7 @@ case "$AGENT" in
       # body of the skill = everything after its own frontmatter block
       awk 'BEGIN{n=0} /^---$/ && n<2 {n++; next} n>=2' "$ROOT_DIR/.pi/skills/workflow/independent-verifier/SKILL.md"
     } > "$agent_tmp"
+    chmod 644 "$agent_tmp"   # mktemp creates 0600 and place() preserves the mode
     place "$agent_tmp" "$TARGET/.claude/agents/independent-verifier.md" managed
     rm -f "$agent_tmp"
 
@@ -171,6 +172,7 @@ case "$AGENT" in
     settings_tmp="$(mktemp)"
     if python3 "$ROOT_DIR/adapters/claude/merge-settings.py" \
          "$TARGET/.claude/settings.json" "$ROOT_DIR/adapters/claude/settings.json" >"$settings_tmp" 2>"$settings_tmp.err"; then
+      chmod 644 "$settings_tmp"
       place "$settings_tmp" "$TARGET/.claude/settings.json" managed
     else
       kept+=(".claude/settings.json (NOT merged: $(head -n1 "$settings_tmp.err"); add the hooks from adapters/claude/settings.json by hand)")

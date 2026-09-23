@@ -9,9 +9,18 @@
 # keeps working instead of reporting done.
 set -euo pipefail
 
+# Hooks run from wherever the session's shell is; everything below is relative to the project root.
+cd "${CLAUDE_PROJECT_DIR:-.}"
+
 CMDS_FILE=".pi/project/commands.sh"
-[[ -f "$CMDS_FILE" ]] && { # shellcheck disable=SC1090
-  source "$CMDS_FILE"; }
+if [[ -f "$CMDS_FILE" ]]; then
+  # A project-owned script may fail or reference unset variables; that must not kill this hook
+  # (exit 1 is a non-blocking hook error, i.e. silently no verification).
+  set +eu
+  # shellcheck disable=SC1090
+  source "$CMDS_FILE"
+  set -eu
+fi
 
 [[ "${HARNESS_VERIFY_ON_STOP:-0}" == "1" ]] || exit 0
 
@@ -35,6 +44,11 @@ changed="$(git diff --name-only HEAD 2>/dev/null || true)$(git diff --name-only 
 [[ -n "$changed" ]] || exit 0
 
 VERIFY_SCRIPT="${HARNESS_VERIFY_SCRIPT:-.harness/scripts/verify.sh}"
+if [[ ! -f "$VERIFY_SCRIPT" ]]; then
+  # A setup gap the model cannot fix by editing code: warn, never block (same as NOT RUN).
+  echo "verify-on-stop: $VERIFY_SCRIPT not found; nothing verified. Reinstall the harness or set HARNESS_VERIFY_SCRIPT." >&2
+  exit 0
+fi
 [[ -x "$VERIFY_SCRIPT" ]] || VERIFY_SCRIPT="bash $VERIFY_SCRIPT"
 TIMEOUT="${HARNESS_VERIFY_ON_STOP_TIMEOUT:-300}"
 

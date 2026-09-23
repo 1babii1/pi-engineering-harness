@@ -7,6 +7,12 @@ Enforcement for Claude Code (`--agent claude`) instead of rule text alone:
 - `hooks/verify-on-stop.sh` Stop hook running `verify.sh quick`, opt-in per project, loop-safe.
 - `independent-verifier` as a real subagent generated from the skill.
 - `.claude/settings.json` is merged (hooks only), never replaced.
+- Independent-verifier findings fixed: `.env.*` / `*.enc.*` globs (wildcards are now expanded to
+  candidate names instead of stripped), paths glued to `(`, `` ` ``, `=`, `:` (`--env-file=.env`,
+  `git show HEAD:.env`), env dumps behind `sudo`/`time`/`/usr/bin/env`/`bash -c`, bare `export`,
+  `declare -p`, `.envrc`; `env CMD` is no longer blocked. Hooks now resolve the project via
+  `CLAUDE_PROJECT_DIR`; a failing `commands.sh` or a missing `verify.sh` no longer disables or
+  wrongly blocks the Stop hook; new settings/agent files are 0644, not 0600.
 - Tests: `tests/hook-guard-secrets.test.sh`, `tests/hook-verify-on-stop.test.sh`, installer merge cases;
   each behavior mutation-checked.
 
