@@ -5,3 +5,5 @@ audit/security
 architecture/security
 architecture/resilience
 project-discovery
+workflow/engineering-reasoning
+services/auth

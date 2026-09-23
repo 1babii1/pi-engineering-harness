@@ -14,3 +14,7 @@ description: Use for authentication, authorization, secrets, input boundaries, O
 - Verify webhook signatures and replay protections.
 - Treat authorization checks as server-side responsibilities.
 - Keep service/database credentials separate from end-user identities.
+- Treat a third party's assertion (a provider's email, a webhook field) as untrusted until its
+  own "verified"/signature flag is checked; a missing flag means not verified.
+- Credential changes must end the sessions and tokens they invalidate.
+- For account/auth services load `services/auth` for concrete checks.

@@ -1,0 +1,17 @@
+id: jobs-multi-instance-rotation
+category: jobs
+task: 'A daily job rotates a signing key: if the newest key is older than 30 days it creates a new one. The service can run on two instances at once during deploys. Make it safe and show how you prove it.'
+expected:
+  - serializes the job across instances with a database-level lock
+  - re-checks whether rotation is due after acquiring the lock
+  - proves it with a test that launches several concurrent callers and expects exactly one new key
+forbidden:
+  - relies on an in-process flag or lock
+must_match:
+  - '(?i)(advisory lock|pg_advisory|lock)'
+  - '(?i)(re-?check|re-?read|after (acquiring|taking|holding)[^.]{0,40}lock)'
+  - '(?i)(concurrent|parallel|several|multiple)[^.]{0,60}(callers|instances|tasks|threads|requests)'
+must_not_match:
+  - '(?i)(in-memory|static)\s+(bool|flag|variable|lock)[^.]{0,60}(is enough|solves|prevents)'
+checks:
+  mode: mixed

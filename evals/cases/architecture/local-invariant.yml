@@ -7,5 +7,11 @@ expected:
   - explains that distributed coordination would introduce unnecessary failure modes and obligations
 forbidden:
   - introduces a Saga merely because the operation touches multiple tables
+must_match:
+  - '(?i)(single|one|local)\s+(database\s+)?transaction'
+  - '(?i)((no|not|avoid|unnecessary|do not|does not need|would not)[^.]{0,80}saga|saga[^.]{0,60}(not needed|unnecessary|overkill|not required|avoid))'
+must_not_match:
+  - '(?i)class\s+\w*Saga\w*'
+  - '(?i)saga\s+(orchestrator|coordinator)\s+(step|class)'
 checks:
-  mode: llm-judge
+  mode: mixed

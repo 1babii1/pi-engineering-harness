@@ -1,0 +1,16 @@
+id: auth-external-link-two-factor
+category: auth
+task: Sign in with Google links to an existing local account by matching email. That account has TOTP two-factor enabled. What should happen the first time the Google login is linked?
+expected:
+  - does not sign the user in on the email match alone
+  - sends the user through the normal second-factor challenge on the first link
+  - may allow later sign-ins with the already-linked provider without a second challenge
+forbidden:
+  - links and signs in silently, bypassing the second factor
+must_match:
+  - '(?i)(second factor|two-factor|2FA|TOTP)[^.]{0,120}(challenge|require|prompt|verify|enter)'
+  - '(?i)(first|initial)[^.]{0,40}(link|sign-?in|time)'
+must_not_match:
+  - '(?i)(skip|bypass)(s|ping)?\s+(the\s+)?(2fa|two-factor|totp|second factor)[^.]{0,60}(always|in every case|for all)'
+checks:
+  mode: mixed

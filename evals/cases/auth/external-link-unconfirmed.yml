@@ -1,0 +1,17 @@
+id: auth-external-link-unconfirmed
+category: auth
+task: Add Sign in with Google. If the Google email matches an existing local account, sign in to that account automatically.
+expected:
+  - requires the provider email to be verified and treats a missing flag as not verified
+  - does not link into an unconfirmed local account as-is (account pre-hijacking)
+  - identifies the user by provider subject after the first link, not by email
+forbidden:
+  - links purely on email equality without checking verification or the local account state
+must_match:
+  - '(?i)email_verified|verified[ -]email|email verification'
+  - '(?i)(unconfirmed|not confirmed|EmailConfirmed)'
+  - '(?i)(\bsub\b|subject|provider key|ProviderKey)'
+must_not_match:
+  - '(?i)link(s|ed|ing)?\s+(on|by|purely on)\s+email\s+(match|equality)\s+(is|are)\s+(safe|enough|sufficient)'
+checks:
+  mode: mixed

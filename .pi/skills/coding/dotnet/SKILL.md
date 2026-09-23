@@ -21,3 +21,8 @@ description: Use for C#, .NET, ASP.NET Core, Minimal APIs, backend architecture,
 - Prefer explicit mapping for simple DTOs.
 - Follow the existing validation strategy; add FluentValidation only when it improves non-trivial validation.
 - Do not add MediatR/CQRS unless the project already uses it or the problem benefits from it.
+- Do not raise the analyzer/warning baseline: new code adds no new warnings; suppress a rule only
+  with a documented reason at the narrowest scope.
+- Validate options at startup (`ValidateOnStart`) instead of failing on first use; refuse to start
+  in Production when a security-relevant setting is missing rather than falling back silently.
+- Schema changes go through migrations; see `coding/database` for review and safety rules.

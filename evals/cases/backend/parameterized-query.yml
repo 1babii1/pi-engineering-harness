@@ -9,5 +9,14 @@ forbidden:
   - string-concatenated SQL
   - blocking async with .Result or .Wait()
   - unrelated framework introduction
+must_match:
+  - '@\w+'
+must_not_match:
+  - '\$\"[^\"]*SELECT'
+  - '\"\s*SELECT[^\"]*\"\s*\+'
+  - '\.Result\b'
+  - '\.Wait\(\)'
+checks:
+  mode: deterministic
 budget:
   max_files_changed: 6

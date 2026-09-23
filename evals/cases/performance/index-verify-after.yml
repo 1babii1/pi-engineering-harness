@@ -1,0 +1,17 @@
+id: performance-index-verify-after
+category: performance
+task: You added a composite index to speed up a query that was taking 800ms. How do you know it worked, and what do you report?
+expected:
+  - re-runs the measurement (EXPLAIN ANALYZE or an equivalent timing) after the change, not just before
+  - reports the actual after number, not an assumption that it must be faster now
+  - checks the query plan actually uses the new index rather than assuming the index alone is proof
+forbidden:
+  - reports success because the index was added, without a number from after the change
+must_match:
+  - '(?i)(EXPLAIN|re-?run|measure|profil)[^.]{0,60}(after|again|once more|post)'
+  - '(?i)\d+\s*ms'
+  - '(?i)(plan|index)[^.]{0,60}(uses?|is used|scan)'
+must_not_match:
+  - '(?i)(should|will)\s+(now\s+)?be\s+faster\b[^.]{0,60}(since|because)[^.]{0,60}(index|added)'
+checks:
+  mode: mixed

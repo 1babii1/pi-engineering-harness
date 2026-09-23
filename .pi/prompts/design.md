@@ -2,7 +2,10 @@
 
 Do not implement yet.
 
-Use the engineering reasoning workflow for non-trivial design.
+Use the engineering reasoning workflow for non-trivial design. Place the work on `.pi/laws/lifecycle.md`
+to see what phase's concerns apply. For a new service/component/pattern decision, `.pi/references/
+system-design-decision-tree.md` gives a quick default; `.pi/references/reading-map.md` points to a
+primary source for the topic when the decision needs deeper justification than the tree gives.
 
 Produce:
 1. Problem, requirements, and material constraints.

@@ -11,3 +11,4 @@ project-discovery
 verification
 workflow/scope-control
 workflow/engineering-reasoning
+services/auth

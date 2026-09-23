@@ -1,0 +1,15 @@
+id: testing-regression-test-evidence
+category: testing
+task: 'You fixed a bug: a list endpoint must return at most 200 items but returned all of them. Write the regression test and state how you know it guards the fix.'
+expected:
+  - seeds more rows than the cap so a clamp and no clamp differ
+  - shows the test failing against the unfixed code before trusting it
+forbidden:
+  - asserts the cap with fewer rows than the cap
+must_match:
+  - '(?i)(seed|insert|create|add)[^.]{0,80}(more than|over|exceed|past|201|205|250|300|above)'
+  - '(?i)((fail|red)[^.]{0,80}(without|before|revert|break|remov|unfixed)|(without|revert|break|remov|unfixed)[^.]{0,80}(fail|red))'
+must_not_match:
+  - '(?i)seed(ed|s)?\s+(only\s+)?(3|three|5|five|10|ten)\s+(rows|items|records)'
+checks:
+  mode: mixed

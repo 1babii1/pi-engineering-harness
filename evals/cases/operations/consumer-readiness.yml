@@ -1,0 +1,18 @@
+id: operations-consumer-readiness
+category: operations
+task: Add a new Kafka consumer that processes order-shipped events and updates a read model. What needs to exist before this is production ready?
+expected:
+  - a health/readiness signal that reflects consumption progress or lag, not just that the process is running
+  - structured logs with a correlation id, not print statements
+  - dead-letter/poison-message visibility, not a silent drop
+  - an alert with a named owner for consumer failure or growing lag
+forbidden:
+  - ships without any way to notice the consumer has stopped processing or is falling behind
+must_match:
+  - '(?i)(lag|consum\w* progress|offset)'
+  - '(?i)(dead[- ]letter|poison|DLQ)'
+  - '(?i)(alert|page|notif\w*)[^.]{0,60}(owner|team|on-?call|someone)'
+must_not_match:
+  - '(?i)(no monitoring|no alert(ing|s)?)[^.]{0,60}(is fine|needed|necessary|required)\b'
+checks:
+  mode: mixed

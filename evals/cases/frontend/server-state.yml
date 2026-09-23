@@ -7,3 +7,10 @@ expected:
 forbidden:
   - duplicate API response stored in client-global state without justification
   - useEffect used only to mirror derived/server state
+must_match:
+  - 'use(Query|SuspenseQuery)\('
+must_not_match:
+  - '(?s)useEffect\(.{0,300}?\bset[A-Z]\w*\('
+  - 'create\(\s*\(set'
+checks:
+  mode: mixed
