@@ -24,8 +24,9 @@ Output only evidence-backed blockers/high/medium findings and unresolved verific
 Do not redesign the feature unless the implementation has a concrete defect.
 
 ## How to run it
-Fresh context means no builder reasoning, only artifacts. In Claude Code launch a new subagent (or a
-new session); in other agents open a new thread. Give it the inputs above and the list of proof
+Fresh context means no builder reasoning, only artifacts. In Claude Code use the installed
+`independent-verifier` subagent (`install.sh --agent claude` generates it from this skill; it is
+read-only on the working tree) or a new session; in other agents open a new thread. Give it the inputs above and the list of proof
 obligations from `.pi/work/obligations.md` if one exists. Do not pass the builder's summary of why the
 change is correct.
 

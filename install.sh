@@ -155,6 +155,27 @@ case "$AGENT" in
   pi|codex) : ;;
   claude)
     place "$ROOT_DIR/adapters/claude/CLAUDE.md" "$TARGET/CLAUDE.md" entry
+
+    # Hooks and the verifier subagent are harness-owned and refreshed on every install.
+    place_tree "$ROOT_DIR/hooks" "$TARGET/.harness/hooks" managed
+    # The subagent's body is generated from the skill so the verifier procedure has one source.
+    agent_tmp="$(mktemp)"
+    { cat "$ROOT_DIR/adapters/claude/agents/independent-verifier.frontmatter.md"
+      # body of the skill = everything after its own frontmatter block
+      awk 'BEGIN{n=0} /^---$/ && n<2 {n++; next} n>=2' "$ROOT_DIR/.pi/skills/workflow/independent-verifier/SKILL.md"
+    } > "$agent_tmp"
+    place "$agent_tmp" "$TARGET/.claude/agents/independent-verifier.md" managed
+    rm -f "$agent_tmp"
+
+    # Merge hooks into an existing settings.json instead of replacing it (permissions etc. survive).
+    settings_tmp="$(mktemp)"
+    if python3 "$ROOT_DIR/adapters/claude/merge-settings.py" \
+         "$TARGET/.claude/settings.json" "$ROOT_DIR/adapters/claude/settings.json" >"$settings_tmp" 2>"$settings_tmp.err"; then
+      place "$settings_tmp" "$TARGET/.claude/settings.json" managed
+    else
+      kept+=(".claude/settings.json (NOT merged: $(head -n1 "$settings_tmp.err"); add the hooks from adapters/claude/settings.json by hand)")
+    fi
+    rm -f "$settings_tmp" "$settings_tmp.err"
     # Claude Code discovers skills only from .claude/skills/<name>/SKILL.md (never .pi/skills/),
     # so mirror the selected skills there under their frontmatter name, or they stay invisible.
     for skill in "${SKILLS[@]}"; do
@@ -191,6 +212,7 @@ for f in "${updated[@]}"; do echo "  ~ $f"; done
 for f in "${removed[@]}"; do echo "  - $f"; done
 for f in "${kept[@]}"; do
   case "$f" in
+    .claude/settings.json*) echo "  ! $f";;
     AGENTS.md|CLAUDE.md|GEMINI.md|.cursor/*) echo "  = $f differs from the harness version; kept (use --overwrite-entry to replace, old copy is backed up)";;
     *) echo "  = $f kept (project data, never overwritten)";;
   esac

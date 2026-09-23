@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.8.0
+Enforcement for Claude Code (`--agent claude`) instead of rule text alone:
+- `hooks/guard-secrets.py` PreToolUse hook for the secrets policy (adversarially probed: real Glob
+  tool shape, shell globs, `FOO=1 env`, case-insensitive filesystems, invalid project patterns).
+- `hooks/verify-on-stop.sh` Stop hook running `verify.sh quick`, opt-in per project, loop-safe.
+- `independent-verifier` as a real subagent generated from the skill.
+- `.claude/settings.json` is merged (hooks only), never replaced.
+- Tests: `tests/hook-guard-secrets.test.sh`, `tests/hook-verify-on-stop.test.sh`, installer merge cases;
+  each behavior mutation-checked.
+
 ## 4.7.0
 Merged with `main` (PR #1, developed in parallel): kept `coding/generic` for non-.NET backends and
 restored the Claude Code skill mirror into `.claude/skills/<name>/` on top of the new backup-aware

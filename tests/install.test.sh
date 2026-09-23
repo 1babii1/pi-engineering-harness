@@ -106,6 +106,34 @@ assert_no_file "$T4/.claude/skills/dotnet-backend" "claude adapter mirrors only 
 echo stale > "$T4/.claude/skills/verification/stale.md"
 TARGET="$T4" "$INSTALL" --agent claude verification >/dev/null 2>&1
 assert_no_file "$T4/.claude/skills/verification/stale.md" "a reinstall prunes stale files from a mirrored skill"
+# --- claude hooks, verifier subagent, settings merge --------------------------------------------
+assert_file "$T4/.harness/hooks/guard-secrets.py" "claude adapter installs the secrets guard hook"
+assert_file "$T4/.harness/hooks/verify-on-stop.sh" "claude adapter installs the stop hook"
+assert_contains "$T4/.claude/agents/independent-verifier.md" "name: independent-verifier" "the verifier subagent has frontmatter"
+assert_contains "$T4/.claude/agents/independent-verifier.md" "Do not trust, re-check" "the verifier subagent body comes from the skill"
+assert_contains "$T4/.claude/settings.json" "guard-secrets.py" "settings.json wires the secrets guard"
+assert_contains "$T4/.claude/settings.json" "verify-on-stop.sh" "settings.json wires the stop hook"
+TC="$(new_dir)"; mkdir -p "$TC/.claude"
+cat > "$TC/.claude/settings.json" <<'JSON'
+{"permissions":{"allow":["Bash(dotnet build *)"]},"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"my-own-hook.sh"}]}]}}
+JSON
+TARGET="$TC" "$INSTALL" --agent claude verification >/dev/null 2>&1
+assert_contains "$TC/.claude/settings.json" "my-own-hook.sh" "merge keeps the project's own hook"
+assert_contains "$TC/.claude/settings.json" "Bash(dotnet build *)" "merge keeps permissions untouched"
+assert_contains "$TC/.claude/settings.json" "guard-secrets.py" "merge adds the harness hook"
+before="$(md5sum < "$TC/.claude/settings.json")"
+out="$(TARGET="$TC" "$INSTALL" --agent claude verification 2>&1)"
+assert_eq "$(md5sum < "$TC/.claude/settings.json")" "$before" "a second install does not duplicate hooks"
+assert_eq "$(grep -c guard-secrets.py "$TC/.claude/settings.json")" "1" "the guard hook appears exactly once"
+TD="$(new_dir)"; mkdir -p "$TD/.claude"; echo '{ not json' > "$TD/.claude/settings.json"
+out="$(TARGET="$TD" "$INSTALL" --agent claude verification 2>&1)"
+assert_eq "$(cat "$TD/.claude/settings.json")" "{ not json" "an unparseable settings.json is left untouched"
+assert_out_contains "$out" "NOT merged" "an unparseable settings.json is reported, not silently skipped"
+TE="$(new_dir)"; TARGET="$TE" "$INSTALL" --agent claude --dry-run verification >/dev/null 2>&1
+assert_no_file "$TE/.claude" "dry-run creates no .claude files"
+TF="$(new_dir)"; TARGET="$TF" "$INSTALL" verification >/dev/null 2>&1
+assert_no_file "$TF/.harness/hooks" "non-claude agents get no hooks directory"
+
 T5="$(new_dir)"
 TARGET="$T5" "$INSTALL" --agent cursor verification >/dev/null 2>&1
 assert_file "$T5/.cursor/rules/engineering-harness.mdc" "cursor adapter installs the rule"
