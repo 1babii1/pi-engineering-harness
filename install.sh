@@ -153,7 +153,17 @@ done
 
 case "$AGENT" in
   pi|codex) : ;;
-  claude) place "$ROOT_DIR/adapters/claude/CLAUDE.md" "$TARGET/CLAUDE.md" entry ;;
+  claude)
+    place "$ROOT_DIR/adapters/claude/CLAUDE.md" "$TARGET/CLAUDE.md" entry
+    # Claude Code discovers skills only from .claude/skills/<name>/SKILL.md (never .pi/skills/),
+    # so mirror the selected skills there under their frontmatter name, or they stay invisible.
+    for skill in "${SKILLS[@]}"; do
+      skill_name="$(sed -n 's/^name:[[:space:]]*//p' "$ROOT_DIR/.pi/skills/$skill/SKILL.md" | head -n1)"
+      [[ -n "$skill_name" ]] || skill_name="$(basename "$skill")"
+      place_tree "$ROOT_DIR/.pi/skills/$skill" "$TARGET/.claude/skills/$skill_name" managed
+      prune_stale "$ROOT_DIR/.pi/skills/$skill" "$TARGET/.claude/skills/$skill_name"
+    done
+    ;;
   gemini) place "$ROOT_DIR/adapters/gemini/GEMINI.md" "$TARGET/GEMINI.md" entry ;;
   cursor)
     rule="$(mktemp)"

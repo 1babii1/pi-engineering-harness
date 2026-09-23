@@ -101,6 +101,11 @@ assert_eq "$(find "$T" -type f -printf '%p %s\n' | sort | md5sum)" "$snapshot" "
 T4="$(new_dir)"
 TARGET="$T4" "$INSTALL" --agent claude verification >/dev/null 2>&1
 assert_contains "$T4/CLAUDE.md" "@AGENTS.md" "claude adapter installs CLAUDE.md"
+assert_file "$T4/.claude/skills/verification/SKILL.md" "claude adapter mirrors selected skills into .claude/skills"
+assert_no_file "$T4/.claude/skills/dotnet-backend" "claude adapter mirrors only the selected skills"
+echo stale > "$T4/.claude/skills/verification/stale.md"
+TARGET="$T4" "$INSTALL" --agent claude verification >/dev/null 2>&1
+assert_no_file "$T4/.claude/skills/verification/stale.md" "a reinstall prunes stale files from a mirrored skill"
 T5="$(new_dir)"
 TARGET="$T5" "$INSTALL" --agent cursor verification >/dev/null 2>&1
 assert_file "$T5/.cursor/rules/engineering-harness.mdc" "cursor adapter installs the rule"

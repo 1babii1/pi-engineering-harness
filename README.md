@@ -41,11 +41,18 @@ Skills not in any profile (`services/payments`, `services/notifications`, `servi
 repositories have zero or one of these, so bundling all of them into `backend`/`fullstack` would load
 context for services the project does not have. `./install.sh backend services/payments`.
 
+`backend`/`fullstack` currently install `coding/dotnet` (and `coding/react` for
+frontend/fullstack) - the only language-specific coding skills written so far. On any
+other stack, add `coding/generic` instead (language-agnostic backend principles) until a
+dedicated skill for that stack exists, or write one following the existing skills' shape.
+
 ## Install
 
 ```bash
 TARGET=/path/to/project ./install.sh fullstack production
 TARGET=/path/to/project ./install.sh --dry-run fullstack   # show what would change, write nothing
+# Non-.NET/React stack:
+TARGET=/path/to/project ./install.sh backend coding/generic
 ```
 
 Ownership model (safe to re-run to upgrade):
@@ -62,6 +69,15 @@ If you improved a harness skill inside a project, move that improvement back int
 before reinstalling - otherwise the reinstall replaces it (the old copy stays in the backup).
 Add `.harness/backup/` to the project's `.gitignore`.
 Upgrading an existing project: `--overwrite-entry` is needed once to receive the new `AGENTS.md` (the old one is backed up).
+
+Profile selection happens once, at install time, and is the same for every agent - this is
+deliberate for Pi/Codex/Cursor, which have no runtime mechanism of their own to decide
+which installed skill is relevant to the task in front of them; the profile *is* that
+decision, made up front. Claude Code is the one exception: it already loads skills on
+demand at runtime based on each skill's own description (see `adapters/claude/README.md`),
+so for that agent the profile only bounds *what's reachable*, not what gets used for a
+given task - narrowing further than the profile happens automatically, not by re-running
+`install.sh`.
 
 ## Project context
 

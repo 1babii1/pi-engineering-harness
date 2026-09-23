@@ -1,6 +1,10 @@
 # Changelog
 
 ## 4.7.0
+Merged with `main` (PR #1, developed in parallel): kept `coding/generic` for non-.NET backends and
+restored the Claude Code skill mirror into `.claude/skills/<name>/` on top of the new backup-aware
+installer (with a regression test); the 4.x eval format supersedes PR #1's `checks.forbidden_patterns`.
+
 Two new signals found using the harness on a real foundations review of a live platform:
 - New dependency: check for known vulnerabilities (transitive included) before treating a
   successful build as verification - found because adding one SignalR package silently
