@@ -38,6 +38,7 @@ case "$mode" in
     step "verify script tests" tests/verify.test.sh
     step "secrets guard hook tests" tests/hook-guard-secrets.test.sh
     step "stop hook tests" tests/hook-verify-on-stop.test.sh
+    step "benchmark pipeline tests" tests/bench.test.sh
     ;;
   grade)
     [[ $# -eq 3 ]] || { echo "Usage: $0 grade <case-id> <response-file>" >&2; exit 2; }

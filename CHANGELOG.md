@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.9.0
+- `evals/bench.py` + `evals/runners/{claude,codex,pi}.sh`: run every eval case with a real agent, bare vs harness,
+  graded by the existing deterministic graders; cost and error accounting, budget cap, report. Claude is fully
+  isolated (verified), Codex partially (documented), Pi needs `PI_RUN_CMD` (its CLI was not available to verify).
+  Tested end to end with stub runners and mutation-checked. Never part of `./eval.sh regression` (it costs money).
+- `concurrency-check-then-act` grader made word-form and order tolerant after the first real run rejected a
+  correct answer ("caught" vs "catch").
+- First wide run (22 cases, 1 trial) is NOT a result: many failures were grader false negatives/positives. See
+  `evals/README.md` before citing any number.
+
 ## 4.8.1
 - `guard-secrets`: a git commit message no longer trips the guard when it merely mentions a secret
   file (single-quoted, or a quoted heredoc); code inside it (`$(...)`, backticks, `${`) and anything

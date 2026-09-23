@@ -9,7 +9,7 @@ forbidden:
   - adds a lock or semaphore in application memory as the fix
 must_match:
   - '(?i)unique (index|constraint)'
-  - '(?i)(catch|handle|translate|map)[^.]{0,80}(unique|duplicate|violation|23505|conflict|409)'
+  - '(?i)((catch|caught|handl\w*|translat\w*|map(ped|ping)?)[^.]{0,80}(unique|duplicate|violation|23505|conflict|409)|(unique|duplicate|violation|23505)[^.]{0,80}(catch|caught|handl\w*|translat\w*|mapped|conflict|409))'
 must_not_match:
   - '(?i)\b(lock|SemaphoreSlim|Monitor|mutex)\b[^.]{0,80}(is enough|solves|fixes|will fix|is the fix)'
 checks:
