@@ -11,7 +11,7 @@ forbidden:
 must_match:
   - '(?i)(verify|check|validat)[^.]{0,40}(signature|hmac|hash)'
   - '(?i)(idempoten|duplicate|already processed|dedupe|dedup)'
-  - '(?i)(untrusted|do not trust|cannot trust|not trusted|before it is trusted|only.{0,20}from the verified)'
+  - '(?i)(untrusted|do(n.t| not) (just )?trust|(can.?not|can.t|never) (just )?trust|not trusted|before it is trusted|only.{0,20}from the verified)'
 must_not_match:
   - '(?i)(no need to|does not need to|do not need to)[^.]{0,60}(verify|check)[^.]{0,40}signature'
 checks:

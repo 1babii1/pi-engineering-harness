@@ -8,7 +8,7 @@ expected:
 forbidden:
   - links and signs in silently, bypassing the second factor
 must_match:
-  - '(?i)(second factor|two-factor|2FA|TOTP)[^.]{0,120}(challenge|require|prompt|verify|enter)'
+  - '(?i)((second factor|two-factor|2FA|TOTP|MFA)[^.]{0,120}(challenge|require|prompt|verif|enter)|(challenge|require|prompt|verif|enter)[^.]{0,120}(second factor|two-factor|2FA|TOTP|MFA))'
   - '(?i)(first|initial)[^.]{0,40}(link|sign-?in|time)'
 must_not_match:
   - '(?i)(skip|bypass)(s|ping)?\s+(the\s+)?(2fa|two-factor|totp|second factor)[^.]{0,60}(always|in every case|for all)'

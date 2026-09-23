@@ -9,9 +9,9 @@ forbidden:
   - links purely on email equality without checking verification or the local account state
 must_match:
   - '(?i)email_verified|verified[ -]email|email verification'
-  - '(?i)(unconfirmed|not confirmed|EmailConfirmed)'
+  - '(?i)(unconfirmed|unverified|not (yet )?(confirmed|verified)|EmailConfirmed|(local|existing)[^.]{0,80}(email|account)[^.]{0,80}(verified|confirmed))'
   - '(?i)(\bsub\b|subject|provider key|ProviderKey)'
 must_not_match:
-  - '(?i)link(s|ed|ing)?\s+(on|by|purely on)\s+email\s+(match|equality)\s+(is|are)\s+(safe|enough|sufficient)'
+  - '(?im)(?:^|[.!?]\s+)(?![^.\n]*\b(?:if|unless|once|when|assuming|provided)\b)[^.\n]*\blink(s|ed|ing)?\s+(on|by|purely on)\s+email\s+(match|equality)\s+(is|are)\s+(safe|enough|sufficient)'
 checks:
   mode: mixed

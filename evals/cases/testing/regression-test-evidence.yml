@@ -8,7 +8,7 @@ forbidden:
   - asserts the cap with fewer rows than the cap
 must_match:
   - '(?i)(seed|insert|create|add)[^.]{0,80}(more than|over|exceed|past|201|205|250|300|above)'
-  - '(?i)((fail|red)[^.]{0,80}(without|before|revert|break|remov|unfixed)|(without|revert|break|remov|unfixed)[^.]{0,80}(fail|red))'
+  - '(?i)((fail|red)[^.]{0,80}(without|before|revert|break|remov|unfixed|pre-?fix|buggy|old (code|implementation|handler))|(without|revert|break|remov|unfixed|pre-?fix|buggy)[^.]{0,80}(fail|red))'
 must_not_match:
   - '(?i)seed(ed|s)?\s+(only\s+)?(3|three|5|five|10|ten)\s+(rows|items|records)'
 checks:

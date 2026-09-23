@@ -49,6 +49,15 @@ assert_contains "$OUT/report.md" "isolation: none (test)" "the runner's isolatio
 assert_contains "$OUT/report.md" "regex heuristics" "the report states the graders are heuristics"
 assert_eq "$(python3 -c "import json;print(len(json.load(open('$OUT/results.json'))['runs']))")" "8" "every run is recorded"
 
+# --- --regrade re-scores saved answers with the current graders and calls no model ---------------
+out="$($BENCH --regrade "$OUT" 2>&1)"
+assert_file "$OUT/report-regraded.md" "regrade writes its own report"
+assert_out_contains "$out" "0 verdict(s) changed" "regrading unchanged graders and answers changes nothing"
+cp "$ROOT_DIR/evals/fixtures/concurrency-check-then-act.good.md" "$OUT/responses/concurrency-check-then-act/bare-1.md"
+out="$($BENCH --regrade "$OUT" 2>&1)"
+assert_out_contains "$out" "concurrency-check-then-act bare #1: fail -> pass" "regrade picks up a changed verdict and names it"
+assert_contains "$OUT/results.json" '"status": "fail"' "regrade does not overwrite the original results"
+
 # --- the preamble reaches the agent for both variants -------------------------------------------
 mk_runner "$D/echo.sh" echo
 OUT4="$D/out-echo"
@@ -56,6 +65,7 @@ $BENCH --agent claude --runner "$D/echo.sh" --cases concurrency-check-then-act -
 assert_contains "$OUT4/responses/concurrency-check-then-act/bare-1.md" "no application code to inspect" "the preamble is prepended for the bare variant"
 assert_contains "$OUT4/responses/concurrency-check-then-act/harness-1.md" "no application code to inspect" "the preamble is prepended for the harness variant"
 assert_contains "$OUT4/report.md" "task preamble (both variants)" "the report states the preamble"
+assert_contains "$OUT4/responses/concurrency-check-then-act/bare-1.md" "include a short snippet" "the preamble allows code where code is the answer"
 
 # --- errors are not passes and not fails -------------------------------------------------------
 mk_runner "$D/fail.sh" fail

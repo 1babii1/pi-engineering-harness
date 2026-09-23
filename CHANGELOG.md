@@ -7,8 +7,14 @@
   Tested end to end with stub runners and mutation-checked. Never part of `./eval.sh regression` (it costs money).
 - `concurrency-check-then-act` grader made word-form and order tolerant after the first real run rejected a
   correct answer ("caught" vs "catch").
-- First wide run (22 cases, 1 trial) is NOT a result: many failures were grader false negatives/positives. See
-  `evals/README.md` before citing any number.
+- `bench.py --regrade DIR` re-scores saved answers with the current graders and calls no model, the free way to
+  fix a grader.
+- Graders widened after auditing all 44 answers of the first wide run: word order ("prompt for the TOTP code"),
+  contractions ("don't trust"), hyphens ("blast-radius"), synonyms ("pre-fix"), and two false positives
+  (a conditional sentence; "a problem the database already solves" read as "the lock solves it"). 9 verdicts
+  flipped fail -> pass, in both variants alike. Only false negatives were hunted, so pass rates may be slightly
+  optimistic.
+- The task preamble now allows a short snippet where code is the answer (two cases grade literal code).
 
 ## 4.8.1
 - `guard-secrets`: a git commit message no longer trips the guard when it merely mentions a secret

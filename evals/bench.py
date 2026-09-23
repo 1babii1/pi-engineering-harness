@@ -44,7 +44,7 @@ VARIANTS = ("bare", "harness")
 DEFAULT_PREAMBLE = (
     "This is a design/engineering question. There is no application code to inspect, so do not ask for "
     "code or clarification: give your concrete recommendation, the key trade-offs, and any assumptions "
-    "you make, in prose."
+    "you make. Where concrete code or a query is the clearest answer, include a short snippet."
 )
 
 
@@ -143,9 +143,37 @@ def summarize(records: list[dict], header: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def regrade(out: Path) -> int:
+    """Re-grade saved answers with the current graders. Free: the only way to fix a grader without paying again."""
+    data = json.loads((out / "results.json").read_text())
+    cases = {c["id"]: c for _, c in evalrun.load_cases()}
+    changed: list[str] = []
+    for rec in data["runs"]:
+        if rec["status"] not in ("pass", "fail") or rec["case"] not in cases:
+            continue
+        answer = out / "responses" / rec["case"] / f"{rec['variant']}-{rec['trial']}.md"
+        if not answer.is_file():
+            continue
+        results, _ = evalrun.grade_text(cases[rec["case"]], answer.read_text(encoding="utf-8"))
+        status = "pass" if all(ok for ok, _ in results) else "fail"
+        if status != rec["status"]:
+            changed.append(f"{rec['case']} {rec['variant']} #{rec['trial']}: {rec['status']} -> {status}")
+        rec["status"] = status
+        rec["failed_checks"] = [label for ok, label in results if not ok]
+    (out / "results-regraded.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
+    report = summarize(data["runs"], data["header"])
+    (out / "report-regraded.md").write_text(report, encoding="utf-8")
+    print(report)
+    print(f"{len(changed)} verdict(s) changed by the current graders:")
+    for line in changed:
+        print("  " + line)
+    return 0
+
+
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--agent", required=True, choices=["claude", "codex", "pi"])
+    ap.add_argument("--agent", choices=["claude", "codex", "pi"])
+    ap.add_argument("--regrade", metavar="DIR", help="re-grade the answers saved in DIR with the current graders; calls no model")
     ap.add_argument("--variants", default="bare,harness")
     ap.add_argument("--trials", type=int, default=3)
     ap.add_argument("--cases", help="comma-separated case ids")
@@ -158,6 +186,10 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--preamble", default=DEFAULT_PREAMBLE, help="text prepended to every task for both variants ("" to disable)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
+    if args.regrade:
+        return regrade(Path(args.regrade))
+    if not args.agent:
+        ap.error("--agent is required unless --regrade is given")
 
     variants = [v.strip() for v in args.variants.split(",") if v.strip()]
     if not variants or any(v not in VARIANTS for v in variants):
