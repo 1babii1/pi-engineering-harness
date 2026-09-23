@@ -1,0 +1,17 @@
+id: frontend-server-client-boundary
+category: frontend
+task: In a Next.js App Router page, fetch a secret-bearing API key and use it to load data, then render an interactive like button.
+expected:
+  - fetches the data and uses the API key in a Server Component
+  - marks only the interactive like button 'use client'
+  - does not pass the API key as a prop into the client component
+forbidden:
+  - marks the whole page 'use client' and fetches in a useEffect
+must_match:
+  - '(?i)server component'
+  - '''use client'''
+  - '(?i)(api key|secret)[^.]{0,80}(server|not[^.]{0,20}(client|expose)|never)'
+must_not_match:
+  - '(?i)''use client''[^\n]{0,20}\n[^\n]{0,300}useEffect'
+checks:
+  mode: mixed

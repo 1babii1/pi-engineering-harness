@@ -1,7 +1,7 @@
-# Claude Adapter
+# Claude Code Adapter
 
-`CLAUDE.md` imports the shared `AGENTS.md` via `@AGENTS.md` - the same source-of-truth rule
-text every adapter uses, not a hand-maintained copy.
+Claude Code reads `CLAUDE.md`, not `AGENTS.md`, so the installer writes a `CLAUDE.md` whose first
+line is `@AGENTS.md` (the import syntax) and nothing else that duplicates rules.
 
 Skills are different from the other adapters. Claude Code discovers skills natively from
 `.claude/skills/<name>/SKILL.md` and loads each one on demand, at runtime, based on its own

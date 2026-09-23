@@ -5,3 +5,5 @@ audit/kubernetes
 audit/production
 project-discovery
 verification
+audit/backend-craft
+audit/frontend-craft

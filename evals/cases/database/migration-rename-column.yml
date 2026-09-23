@@ -1,0 +1,17 @@
+id: database-migration-rename-column
+category: database
+task: Rename the Employee.Name property to FullName in an EF Core model and add the migration. The production table has millions of rows of real data.
+expected:
+  - notices that the scaffolded migration drops and re-adds the column, which destroys the data
+  - uses RenameColumn (or add, populate, drop)
+  - verifies the upgrade on a copy or fixture holding representative data
+forbidden:
+  - applies the scaffolded drop and add migration as generated
+must_match:
+  - '(?i)RenameColumn'
+  - '(?i)(data loss|lose|destroy|drop)[^.]{0,80}(column|data|names)'
+  - '(?i)(representative|existing|historical|production)[^.]{0,40}(data|copy|snapshot|rows)'
+must_not_match:
+  - '(?i)(the )?(generated|scaffolded) migration is fine as[- ]is'
+checks:
+  mode: mixed

@@ -8,5 +8,10 @@ expected:
   - distinguishes code compilation from data migration evidence
 forbidden:
   - claims the migration is safe because the project builds
+must_match:
+  - '(?i)(upgrade|existing|historical|representative)[^.]{0,60}(data|state|rows)'
+  - '(?i)duplicate'
+must_not_match:
+  - '(?i)(migration|it) is safe because[^.]{0,40}(build|compil)'
 checks:
-  mode: llm-judge
+  mode: mixed

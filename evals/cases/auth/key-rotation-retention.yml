@@ -1,0 +1,18 @@
+id: auth-key-rotation-retention
+category: auth
+task: Rotate the OpenIddict signing and encryption keys automatically every 30 days. Refresh tokens live 30 days and access tokens 15 minutes. Decide how long old keys stay.
+expected:
+  - encryption keys are retained longer than the refresh-token lifetime; signing keys only slightly longer than access tokens
+  - counts retention from when a key is superseded
+  - proves a token issued before rotation still validates after and new tokens use a new kid
+  - invalidates the cached options used for issuing and validating
+forbidden:
+  - retires old encryption keys immediately after rotation
+must_match:
+  - '(?i)encryption key[^.]{0,160}(35|longer than|outlive|at least)[^.]{0,80}(refresh|30)'
+  - '(?i)(\bkid\b|before rotation|previous token|still validat)'
+  - '(?i)(cache|IOptionsMonitor)[^.]{0,100}(invalidat|clear|remove)'
+must_not_match:
+  - '(?i)retire[sd]?\s+(the\s+)?old\s+(encryption\s+)?keys?\s+immediately'
+checks:
+  mode: mixed

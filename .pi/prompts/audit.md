@@ -2,7 +2,8 @@
 
 Perform a read-only audit. Do not modify code.
 
-Start by identifying project shape and relevant installed audit skills. Inspect the smallest set of files needed to form evidence, then widen only when necessary.
+Start by identifying project shape and relevant installed audit skills. For a production service,
+walk `.pi/references/production-service-checklist.md` explicitly rather than from memory. Inspect the smallest set of files needed to form evidence, then widen only when necessary.
 
 Return:
 1. Executive summary.

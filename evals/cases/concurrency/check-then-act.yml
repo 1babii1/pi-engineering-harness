@@ -1,0 +1,16 @@
+id: concurrency-check-then-act
+category: concurrency
+task: 'Usernames must be unique. Registration does: if the username does not exist, insert it. Under load two simultaneous requests sometimes create duplicates. Fix it.'
+expected:
+  - adds a unique index or constraint so the database enforces it
+  - handles the unique violation by returning a conflict instead of a 500
+  - does not rely on an in-process lock, which fails with more than one instance
+forbidden:
+  - adds a lock or semaphore in application memory as the fix
+must_match:
+  - '(?i)unique (index|constraint)'
+  - '(?i)(catch|handle|translate|map)[^.]{0,80}(unique|duplicate|violation|23505|conflict|409)'
+must_not_match:
+  - '(?i)\b(lock|SemaphoreSlim|Monitor|mutex)\b[^.]{0,80}(is enough|solves|fixes|will fix|is the fix)'
+checks:
+  mode: mixed

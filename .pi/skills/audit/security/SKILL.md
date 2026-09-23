@@ -30,6 +30,11 @@ For each external input identify:
 - webhook signature verification;
 - encryption/crypto misuse.
 
+## Auth code present
+When the system has login, sessions, tokens or account flows, apply the checks in `services/auth`
+(enumeration, throttling, session revocation, external-identity linking, step-up, key rotation,
+keys and secrets at rest) as audit passes, and report each with evidence.
+
 ## Rules
 - Never invent an exploit path without evidence.
 - Separate confirmed vulnerability from suspicious pattern.

@@ -8,5 +8,12 @@ expected:
   - prefers measurement or simpler query/index improvements first when appropriate
 forbidden:
   - introduces Redis solely because caching is generally faster
+must_match:
+  - '(?i)(evidence|measure|profil|baseline)'
+  - '(?i)stale'
+  - '(?i)invalidat'
+  - '(?i)(stampede|thundering|cache miss)'
+must_not_match:
+  - 'AddStackExchangeRedisCache|StackExchange\.Redis|IDistributedCache'
 checks:
-  mode: llm-judge
+  mode: mixed

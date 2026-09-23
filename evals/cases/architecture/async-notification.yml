@@ -7,7 +7,11 @@ expected:
   - considers idempotent delivery/retry behavior
 forbidden:
   - introduces a distributed platform without a concrete need
+must_match:
+  - '(?i)outbox'
+  - '(?i)idempoten'
+  - '(?i)\b(async|queue|background|event)'
+must_not_match:
+  - '(?i)\b(use|adopt|introduce|deploy|set up)\b[^.]{0,40}\b(kubernetes|service mesh|event sourcing)\b'
 checks:
-  # A design/reasoning task, not a diff - there's no code output to pattern-match at
-  # all. Always an LLM-judge or human-review case.
-  mode: llm-judge
+  mode: mixed

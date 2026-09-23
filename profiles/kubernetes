@@ -7,3 +7,5 @@ audit/security
 audit/production
 project-discovery
 verification
+workflow/scope-control
+workflow/engineering-reasoning

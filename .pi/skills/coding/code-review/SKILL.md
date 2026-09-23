@@ -26,3 +26,7 @@ Finally ask:
 - Is anything duplicated?
 - Did complexity increase unnecessarily?
 - Does this follow existing repository patterns?
+
+Also check that comments, docs, config templates and names still tell the truth: a comment that
+contradicts the code it sits on (for example "registered oldest-first" above code that registers
+newest-first) misleads the next change more than no comment does.

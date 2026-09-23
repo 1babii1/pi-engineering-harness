@@ -25,3 +25,7 @@ Decision order:
 5. Add cache, queue, sharding, CQRS, or distributed transactions only when their problem exists.
 
 Always discuss trade-offs rather than presenting a pattern as universally best.
+
+See `.pi/references/system-design-decision-tree.md` for a quick default per decision point above,
+and `.pi/references/reading-map.md` for where to read further when a choice needs more justification
+than the tree gives.

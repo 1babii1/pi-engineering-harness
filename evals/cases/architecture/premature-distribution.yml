@@ -8,5 +8,11 @@ expected:
   - describes triggers that could justify distribution later
 forbidden:
   - treats microservices, Kafka, Redis, or sharding as automatically more production-grade
+must_match:
+  - '(?i)modular monolith'
+  - '(?i)(trigger|when|once|until)[^.]{0,80}(scale|traffic|team|independent|load)'
+must_not_match:
+  - '(?i)\bshard(ing)?\b[^.]{0,40}\b(implement|configure|set up|create)'
+  - '(?i)docker-compose[^\n]*\bkafka\b'
 checks:
-  mode: llm-judge
+  mode: mixed

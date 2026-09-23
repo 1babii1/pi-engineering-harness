@@ -12,6 +12,9 @@ Owns:
 - templates/localization
 - user notification preferences
 - scheduling/quiet hours when required
+- consent/opt-out per channel (unsubscribe link, STOP handling) - required for marketing mail/SMS
+  in most jurisdictions, and worth honoring for transactional notifications where the channel
+  allows it
 - provider adapters
 - delivery state and attempts
 

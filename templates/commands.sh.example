@@ -1,0 +1,12 @@
+# Repository-owned overrides for .harness/scripts/verify*.sh.
+#
+# Copy to .pi/project/commands.sh and uncomment what you need. This file is SOURCED AS SHELL by the
+# verify scripts: keep it in version control, review it like code, and never put secrets in it.
+# (It is deliberately not named *.env: secret files use that name and must stay unreadable to agents.)
+#
+# An override runs once from the repository root; any non-zero exit is a FAIL. Without an override
+# the scripts auto-detect solutions / package.json / manifests from what changed.
+#
+#BACKEND_VERIFY_CMD='dotnet build backend/backend.slnx && dotnet test backend/backend.slnx --no-build'
+#FRONTEND_VERIFY_CMD='cd frontend && npm run lint && npm run build'
+#K8S_VERIFY_CMD='kubeconform -strict -summary k8s/'

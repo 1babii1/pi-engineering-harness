@@ -1,0 +1,18 @@
+id: auth-keys-at-rest
+category: auth
+task: Token signing and encryption private keys are stored as PEM text in a Postgres table. Assess the risk and fix it.
+expected:
+  - explains that a database-only leak would let an attacker forge or decrypt tokens
+  - encrypts the keys with a master key held outside the database
+  - requires the master key in production and migrates existing plaintext rows
+forbidden:
+  - treats base64 as protection
+must_match:
+  - '(?i)(encrypt|AES)'
+  - '(?i)(master key|key[- ]encryption key|KMS|outside (of )?the (database|db)|secret manager|vault)'
+  - '(?i)((production)[^.]{0,80}(require|fail|refuse|must)|(require|fail|refuse)[^.]{0,80}production)'
+  - '(?i)((existing|legacy|plaintext)[^.]{0,60}(migrat|re-?encrypt|upgrade|convert)|(migrat|re-?encrypt|upgrade|convert)[^.]{0,60}(existing|legacy|plaintext))'
+must_not_match:
+  - '(?i)base64[- ]?encod\w*\s+(is|counts as|provides|gives)\s+(enough|encryption|protection|security)'
+checks:
+  mode: mixed
