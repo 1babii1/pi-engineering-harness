@@ -20,6 +20,7 @@ workdir="\$1"
 case "$2" in
   fail) echo "stub failure" >&2; exit 1 ;;
   echo) cat "\$2"; exit 0 ;;
+  turns) [[ -z "\${BENCH_META_FILE:-}" ]] || echo '{"model":"stub","turns":1}' > "\$BENCH_META_FILE" ;;
   costly) [[ -z "\${BENCH_META_FILE:-}" ]] || echo '{"model":"stub","cost_usd":1.0}' > "\$BENCH_META_FILE" ;;
 esac
 id="\$BENCH_CASE_ID"
@@ -66,6 +67,14 @@ assert_contains "$OUT4/responses/concurrency-check-then-act/bare-1.md" "no appli
 assert_contains "$OUT4/responses/concurrency-check-then-act/harness-1.md" "no application code to inspect" "the preamble is prepended for the harness variant"
 assert_contains "$OUT4/report.md" "task preamble (both variants)" "the report states the preamble"
 assert_contains "$OUT4/responses/concurrency-check-then-act/bare-1.md" "include a short snippet" "the preamble allows code where code is the answer"
+
+# --- the report says whether the harness variant read anything ----------------------------------
+mk_runner "$D/turns.sh" turns
+OUT5="$D/out-turns"
+$BENCH --agent claude --runner "$D/turns.sh" --cases concurrency-check-then-act --trials 1 --out "$OUT5" >/dev/null 2>&1
+assert_contains "$OUT5/report.md" "single-turn runs (the agent read no file): bare 1/1, harness 1/1" "single-turn runs are counted per variant"
+assert_contains "$OUT5/report.md" "WARNING: most harness runs never opened a harness file" "the report warns when the harness variant read no harness file"
+assert_not_contains "$OUT/report.md" "single-turn runs" "no turn data means no diagnostic line (stub runners report none)"
 
 # --- errors are not passes and not fails -------------------------------------------------------
 mk_runner "$D/fail.sh" fail

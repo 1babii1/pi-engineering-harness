@@ -120,6 +120,18 @@ def summarize(records: list[dict], header: dict) -> str:
     def cost(variant: str) -> float:
         return sum((r.get("meta") or {}).get("cost_usd") or 0 for r in records if r["variant"] == variant)
 
+    def one_turn(variant: str) -> tuple[int, int] | None:
+        """(runs that finished in a single turn, runs with turn data). A single turn means no file was read."""
+        turns = [(r.get("meta") or {}).get("turns") for r in records if r["variant"] == variant]
+        turns = [t for t in turns if t is not None]
+        return (sum(t <= 1 for t in turns), len(turns)) if turns else None
+
+    diag = []
+    for v in variants:
+        t = one_turn(v)
+        if t:
+            diag.append(f"{v} {t[0]}/{t[1]}")
+    harness_turns = one_turn("harness")
     lines = [
         f"# Benchmark {header['date']} - {header['agent']}",
         "",
@@ -138,6 +150,15 @@ def summarize(records: list[dict], header: dict) -> str:
     for case in cases:
         lines.append(f"| {case} | " + " | ".join(cell(case, v) for v in variants) + " |")
     lines.append("| **all** | " + " | ".join(f"**{cell(None, v)}**" for v in variants) + " |")
+    if diag:
+        lines += ["", "single-turn runs (the agent read no file): " + ", ".join(diag)]
+        if harness_turns and harness_turns[1] and harness_turns[0] / harness_turns[1] > 0.8:
+            lines += [
+                "",
+                "> WARNING: most harness runs never opened a harness file, so the harness variant mostly saw only the",
+                "> always-loaded AGENTS.md. This compares AGENTS.md with nothing; it does not measure the laws, skills",
+                "> and proof obligations that are meant to be loaded on demand.",
+            ]
     if any((r.get("meta") or {}).get("cost_usd") for r in records):
         lines += ["", "cost (USD, as reported by the agent): " + ", ".join(f"{v} {cost(v):.2f}" for v in variants)]
     return "\n".join(lines) + "\n"

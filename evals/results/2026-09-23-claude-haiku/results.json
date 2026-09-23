@@ -1,0 +1,2186 @@
+{
+  "header": {
+    "date": "2026-09-23",
+    "agent": "claude",
+    "info": {
+      "agent": "claude",
+      "version": "2.1.270 (Claude Code)",
+      "isolation": "full (setting-sources project,local; skills disabled; read-only tools)"
+    },
+    "model": "haiku",
+    "harness_version": "4.9.0",
+    "profile": "fullstack production",
+    "trials": 3,
+    "preamble": "This is a design/engineering question. There is no application code to inspect, so do not ask for code or clarification: give your concrete recommendation, the key trade-offs, and any assumptions you make. Where concrete code or a query is the clearest answer, include a short snippet."
+  },
+  "runs": [
+    {
+      "case": "architecture-async-notification",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.017361099999999997,
+        "input_tokens": 9430,
+        "output_tokens": 1197,
+        "duration_ms": 14126,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-async-notification",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)outbox"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0197421,
+        "input_tokens": 10788,
+        "output_tokens": 1129,
+        "duration_ms": 14926,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-cache-obligations",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)stale",
+        "must_match     (?i)(stampede|thundering|cache miss)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0154591,
+        "input_tokens": 9424,
+        "output_tokens": 817,
+        "duration_ms": 10779,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-cache-obligations",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)stale",
+        "must_match     (?i)(stampede|thundering|cache miss)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018533099999999997,
+        "input_tokens": 10796,
+        "output_tokens": 881,
+        "duration_ms": 11941,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-local-invariant",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.015269099999999999,
+        "input_tokens": 9436,
+        "output_tokens": 775,
+        "duration_ms": 10322,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-local-invariant",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(single|one|local)\\s+(database\\s+)?transaction"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018540099999999997,
+        "input_tokens": 10799,
+        "output_tokens": 884,
+        "duration_ms": 10326,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-premature-distribution",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)modular monolith",
+        "must_match     (?i)(trigger|when|once|until)[^.]{0,80}(scale|traffic|team|independent|load)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0170221,
+        "input_tokens": 9446,
+        "output_tokens": 1116,
+        "duration_ms": 15317,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-premature-distribution",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.019074099999999997,
+        "input_tokens": 10822,
+        "output_tokens": 976,
+        "duration_ms": 12637,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-external-link-two-factor",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(first|initial)[^.]{0,40}(link|sign-?in|time)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0168841,
+        "input_tokens": 9434,
+        "output_tokens": 1093,
+        "duration_ms": 12663,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-external-link-two-factor",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020643099999999998,
+        "input_tokens": 10801,
+        "output_tokens": 1298,
+        "duration_ms": 16737,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-external-link-unconfirmed",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(\\bsub\\b|subject|provider key|ProviderKey)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0157941,
+        "input_tokens": 9421,
+        "output_tokens": 888,
+        "duration_ms": 11877,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-external-link-unconfirmed",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(\\bsub\\b|subject|provider key|ProviderKey)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0199271,
+        "input_tokens": 10795,
+        "output_tokens": 1164,
+        "duration_ms": 13948,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-key-rotation-retention",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)encryption key[^.]{0,160}(35|longer than|outlive|at least)[^.]{0,80}(refresh|30)",
+        "must_match     (?i)(cache|IOptionsMonitor)[^.]{0,100}(invalidat|clear|remove)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020092099999999998,
+        "input_tokens": 9436,
+        "output_tokens": 1736,
+        "duration_ms": 20312,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-key-rotation-retention",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)encryption key[^.]{0,160}(35|longer than|outlive|at least)[^.]{0,80}(refresh|30)",
+        "must_match     (?i)(\\bkid\\b|before rotation|previous token|still validat)",
+        "must_match     (?i)(cache|IOptionsMonitor)[^.]{0,100}(invalidat|clear|remove)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.021291099999999997,
+        "input_tokens": 10798,
+        "output_tokens": 1431,
+        "duration_ms": 17018,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-keys-at-rest",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)((production)[^.]{0,80}(require|fail|refuse|must)|(require|fail|refuse)[^.]{0,80}production)",
+        "must_match     (?i)((existing|legacy|plaintext)[^.]{0,60}(migrat|re-?encrypt|upgrade|convert)|(migrat|re-?encrypt|upgrade|convert)[^.]{0,60}(existing|legacy|plaintext))"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0177911,
+        "input_tokens": 9428,
+        "output_tokens": 1282,
+        "duration_ms": 16071,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-keys-at-rest",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)((production)[^.]{0,80}(require|fail|refuse|must)|(require|fail|refuse)[^.]{0,80}production)",
+        "must_match     (?i)((existing|legacy|plaintext)[^.]{0,60}(migrat|re-?encrypt|upgrade|convert)|(migrat|re-?encrypt|upgrade|convert)[^.]{0,60}(existing|legacy|plaintext))"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0230821,
+        "input_tokens": 10796,
+        "output_tokens": 1793,
+        "duration_ms": 21963,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-password-change-sessions",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(second|other|another)\\s+(browser|session|client|device)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0158131,
+        "input_tokens": 9428,
+        "output_tokens": 883,
+        "duration_ms": 10956,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "auth-password-change-sessions",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(second|other|another)\\s+(browser|session|client|device)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020615099999999997,
+        "input_tokens": 10784,
+        "output_tokens": 1300,
+        "duration_ms": 15018,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "backend-parameterized-query",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0192703,
+        "input_tokens": 29393,
+        "output_tokens": 891,
+        "duration_ms": 11263,
+        "turns": 3
+      },
+      "trial": 1
+    },
+    {
+      "case": "backend-parameterized-query",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.029925900000000002,
+        "input_tokens": 47719,
+        "output_tokens": 1521,
+        "duration_ms": 19568,
+        "turns": 8
+      },
+      "trial": 1
+    },
+    {
+      "case": "boundary-webhook-payment-notification",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(untrusted|do(n.t| not) (just )?trust|(can.?not|can.t|never) (just )?trust|not trusted|before it is trusted|only.{0,20}from the verified)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0155841,
+        "input_tokens": 9414,
+        "output_tokens": 852,
+        "duration_ms": 9670,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "boundary-webhook-payment-notification",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(untrusted|do(n.t| not) (just )?trust|(can.?not|can.t|never) (just )?trust|not trusted|before it is trusted|only.{0,20}from the verified)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0198481,
+        "input_tokens": 10781,
+        "output_tokens": 1157,
+        "duration_ms": 14615,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "concurrency-check-then-act",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0154771,
+        "input_tokens": 9427,
+        "output_tokens": 818,
+        "duration_ms": 9415,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "concurrency-check-then-act",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0186021,
+        "input_tokens": 10792,
+        "output_tokens": 899,
+        "duration_ms": 11992,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "database-migration-rename-column",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0173091,
+        "input_tokens": 9431,
+        "output_tokens": 1181,
+        "duration_ms": 11863,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "database-migration-rename-column",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)RenameColumn",
+        "must_match     (?i)(representative|existing|historical|production)[^.]{0,40}(data|copy|snapshot|rows)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018992099999999998,
+        "input_tokens": 10795,
+        "output_tokens": 971,
+        "duration_ms": 11270,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "destructive-bulk-delete-department",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(cascad|blast[- ]radius|also (delete|remove|affect)|related (records|data|rows)|(downstream|dependent) (record|data|row|dependen)\\w*)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0154501,
+        "input_tokens": 9419,
+        "output_tokens": 819,
+        "duration_ms": 10593,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "destructive-bulk-delete-department",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018361099999999998,
+        "input_tokens": 10777,
+        "output_tokens": 858,
+        "duration_ms": 12391,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "frontend-server-client-boundary",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(api key|secret)[^.]{0,80}(server|not[^.]{0,20}(client|expose)|never)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0160241,
+        "input_tokens": 9435,
+        "output_tokens": 922,
+        "duration_ms": 10085,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "frontend-server-client-boundary",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020157099999999997,
+        "input_tokens": 10789,
+        "output_tokens": 1205,
+        "duration_ms": 13242,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "frontend-server-state",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     use(Query|SuspenseQuery)\\(",
+        "must_not_match (?s)useEffect\\(.{0,300}?\\bset[A-Z]\\w*\\("
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0274584,
+        "input_tokens": 62254,
+        "output_tokens": 1482,
+        "duration_ms": 22261,
+        "turns": 6
+      },
+      "trial": 1
+    },
+    {
+      "case": "frontend-server-state",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     use(Query|SuspenseQuery)\\("
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.031024999999999997,
+        "input_tokens": 60805,
+        "output_tokens": 1375,
+        "duration_ms": 17987,
+        "turns": 7
+      },
+      "trial": 1
+    },
+    {
+      "case": "jobs-multi-instance-rotation",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(re-?check|re-?read|after (acquiring|taking|holding)[^.]{0,40}lock)",
+        "must_match     (?i)(concurrent|parallel|several|multiple)[^.]{0,60}(callers|instances|tasks|threads|requests)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0227921,
+        "input_tokens": 9447,
+        "output_tokens": 2271,
+        "duration_ms": 21728,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "jobs-multi-instance-rotation",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(re-?check|re-?read|after (acquiring|taking|holding)[^.]{0,40}lock)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.022711099999999998,
+        "input_tokens": 10814,
+        "output_tokens": 1706,
+        "duration_ms": 19773,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "operations-consumer-readiness",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(alert|page|notif\\w*)[^.]{0,60}(owner|team|on-?call|someone)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0162631,
+        "input_tokens": 9428,
+        "output_tokens": 974,
+        "duration_ms": 13692,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "operations-consumer-readiness",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(alert|page|notif\\w*)[^.]{0,60}(owner|team|on-?call|someone)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.019720099999999997,
+        "input_tokens": 10799,
+        "output_tokens": 1117,
+        "duration_ms": 15039,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "performance-index-verify-after",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0162881,
+        "input_tokens": 9427,
+        "output_tokens": 981,
+        "duration_ms": 13525,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "performance-index-verify-after",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0179321,
+        "input_tokens": 10794,
+        "output_tokens": 764,
+        "duration_ms": 10950,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "testing-regression-test-evidence",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0156101,
+        "input_tokens": 9440,
+        "output_tokens": 840,
+        "duration_ms": 10845,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "testing-regression-test-evidence",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)((fail|red)[^.]{0,80}(without|before|revert|break|remov|unfixed|pre-?fix|buggy|old (code|implementation|handler))|(without|revert|break|remov|unfixed|pre-?fix|buggy)[^.]{0,80}(fail|red))"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0181131,
+        "input_tokens": 10794,
+        "output_tokens": 799,
+        "duration_ms": 10120,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "verification-migration-evidence",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(upgrade|existing|historical|representative)[^.]{0,60}(data|state|rows)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.015422100000000001,
+        "input_tokens": 9437,
+        "output_tokens": 804,
+        "duration_ms": 10011,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "verification-migration-evidence",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018975099999999998,
+        "input_tokens": 10801,
+        "output_tokens": 969,
+        "duration_ms": 12374,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "verification-not-run-is-not-pass",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(unverified|not verified|could not (be )?verif|no evidence)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0159293,
+        "input_tokens": 19252,
+        "output_tokens": 559,
+        "duration_ms": 7641,
+        "turns": 2
+      },
+      "trial": 1
+    },
+    {
+      "case": "verification-not-run-is-not-pass",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0168771,
+        "input_tokens": 10796,
+        "output_tokens": 553,
+        "duration_ms": 7325,
+        "turns": 1
+      },
+      "trial": 1
+    },
+    {
+      "case": "architecture-async-notification",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)idempoten"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0162721,
+        "input_tokens": 9423,
+        "output_tokens": 981,
+        "duration_ms": 12344,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-async-notification",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)idempoten"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0200941,
+        "input_tokens": 10784,
+        "output_tokens": 1201,
+        "duration_ms": 15021,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-cache-obligations",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0159611,
+        "input_tokens": 9435,
+        "output_tokens": 913,
+        "duration_ms": 12338,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-cache-obligations",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(stampede|thundering|cache miss)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018117099999999997,
+        "input_tokens": 10803,
+        "output_tokens": 797,
+        "duration_ms": 10881,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-local-invariant",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0154571,
+        "input_tokens": 9435,
+        "output_tokens": 813,
+        "duration_ms": 10574,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-local-invariant",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0190171,
+        "input_tokens": 10800,
+        "output_tokens": 979,
+        "duration_ms": 12768,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-premature-distribution",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)modular monolith",
+        "must_match     (?i)(trigger|when|once|until)[^.]{0,80}(scale|traffic|team|independent|load)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0166721,
+        "input_tokens": 9446,
+        "output_tokens": 1046,
+        "duration_ms": 14487,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-premature-distribution",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(trigger|when|once|until)[^.]{0,80}(scale|traffic|team|independent|load)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0203341,
+        "input_tokens": 10812,
+        "output_tokens": 1232,
+        "duration_ms": 15615,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-external-link-two-factor",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(first|initial)[^.]{0,40}(link|sign-?in|time)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0169041,
+        "input_tokens": 9434,
+        "output_tokens": 1094,
+        "duration_ms": 13775,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-external-link-two-factor",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020030100000000002,
+        "input_tokens": 10807,
+        "output_tokens": 1172,
+        "duration_ms": 14098,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-external-link-unconfirmed",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(\\bsub\\b|subject|provider key|ProviderKey)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0169151,
+        "input_tokens": 9419,
+        "output_tokens": 1112,
+        "duration_ms": 14198,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-external-link-unconfirmed",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(unconfirmed|unverified|not (yet )?(confirmed|verified)|EmailConfirmed|(local|existing)[^.]{0,80}(email|account)[^.]{0,80}(verified|confirmed))",
+        "must_match     (?i)(\\bsub\\b|subject|provider key|ProviderKey)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0209461,
+        "input_tokens": 10782,
+        "output_tokens": 1374,
+        "duration_ms": 16376,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-key-rotation-retention",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)encryption key[^.]{0,160}(35|longer than|outlive|at least)[^.]{0,80}(refresh|30)",
+        "must_match     (?i)(cache|IOptionsMonitor)[^.]{0,100}(invalidat|clear|remove)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0206681,
+        "input_tokens": 9434,
+        "output_tokens": 1852,
+        "duration_ms": 22869,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-key-rotation-retention",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)encryption key[^.]{0,160}(35|longer than|outlive|at least)[^.]{0,80}(refresh|30)",
+        "must_match     (?i)(cache|IOptionsMonitor)[^.]{0,100}(invalidat|clear|remove)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0228261,
+        "input_tokens": 10808,
+        "output_tokens": 1734,
+        "duration_ms": 21136,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-keys-at-rest",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)((production)[^.]{0,80}(require|fail|refuse|must)|(require|fail|refuse)[^.]{0,80}production)",
+        "must_match     (?i)((existing|legacy|plaintext)[^.]{0,60}(migrat|re-?encrypt|upgrade|convert)|(migrat|re-?encrypt|upgrade|convert)[^.]{0,60}(existing|legacy|plaintext))"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0208271,
+        "input_tokens": 9426,
+        "output_tokens": 1888,
+        "duration_ms": 22180,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-keys-at-rest",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)((production)[^.]{0,80}(require|fail|refuse|must)|(require|fail|refuse)[^.]{0,80}production)",
+        "must_match     (?i)((existing|legacy|plaintext)[^.]{0,60}(migrat|re-?encrypt|upgrade|convert)|(migrat|re-?encrypt|upgrade|convert)[^.]{0,60}(existing|legacy|plaintext))"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0241221,
+        "input_tokens": 10791,
+        "output_tokens": 2003,
+        "duration_ms": 25217,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-password-change-sessions",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(second|other|another)\\s+(browser|session|client|device)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0179501,
+        "input_tokens": 9434,
+        "output_tokens": 1307,
+        "duration_ms": 12897,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "auth-password-change-sessions",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020480099999999998,
+        "input_tokens": 10799,
+        "output_tokens": 1267,
+        "duration_ms": 13411,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "backend-parameterized-query",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.021535699999999998,
+        "input_tokens": 39667,
+        "output_tokens": 1066,
+        "duration_ms": 14642,
+        "turns": 4
+      },
+      "trial": 2
+    },
+    {
+      "case": "backend-parameterized-query",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0356249,
+        "input_tokens": 87620,
+        "output_tokens": 1682,
+        "duration_ms": 23182,
+        "turns": 7
+      },
+      "trial": 2
+    },
+    {
+      "case": "boundary-webhook-payment-notification",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(untrusted|do(n.t| not) (just )?trust|(can.?not|can.t|never) (just )?trust|not trusted|before it is trusted|only.{0,20}from the verified)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0180891,
+        "input_tokens": 9409,
+        "output_tokens": 1354,
+        "duration_ms": 16613,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "boundary-webhook-payment-notification",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(untrusted|do(n.t| not) (just )?trust|(can.?not|can.t|never) (just )?trust|not trusted|before it is trusted|only.{0,20}from the verified)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0192561,
+        "input_tokens": 10785,
+        "output_tokens": 1037,
+        "duration_ms": 13376,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "concurrency-check-then-act",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.016573099999999997,
+        "input_tokens": 9435,
+        "output_tokens": 1034,
+        "duration_ms": 12929,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "concurrency-check-then-act",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0188771,
+        "input_tokens": 10802,
+        "output_tokens": 949,
+        "duration_ms": 12392,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "database-migration-rename-column",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)RenameColumn",
+        "must_match     (?i)(representative|existing|historical|production)[^.]{0,40}(data|copy|snapshot|rows)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.016078099999999998,
+        "input_tokens": 9428,
+        "output_tokens": 935,
+        "duration_ms": 11808,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "database-migration-rename-column",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(representative|existing|historical|production)[^.]{0,40}(data|copy|snapshot|rows)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020090100000000003,
+        "input_tokens": 10799,
+        "output_tokens": 1190,
+        "duration_ms": 14602,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "destructive-bulk-delete-department",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0164171,
+        "input_tokens": 9415,
+        "output_tokens": 1014,
+        "duration_ms": 12947,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "destructive-bulk-delete-department",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(revers|restore|backup|not[- ]?recoverable|permanent)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0198331,
+        "input_tokens": 10783,
+        "output_tokens": 1150,
+        "duration_ms": 14236,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "frontend-server-client-boundary",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0166781,
+        "input_tokens": 9432,
+        "output_tokens": 1055,
+        "duration_ms": 11636,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "frontend-server-client-boundary",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0202231,
+        "input_tokens": 10807,
+        "output_tokens": 1213,
+        "duration_ms": 13396,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "frontend-server-state",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     use(Query|SuspenseQuery)\\(",
+        "must_not_match (?s)useEffect\\(.{0,300}?\\bset[A-Z]\\w*\\("
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0189974,
+        "input_tokens": 29239,
+        "output_tokens": 869,
+        "duration_ms": 10840,
+        "turns": 3
+      },
+      "trial": 2
+    },
+    {
+      "case": "frontend-server-state",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.034171,
+        "input_tokens": 85381,
+        "output_tokens": 1512,
+        "duration_ms": 21168,
+        "turns": 7
+      },
+      "trial": 2
+    },
+    {
+      "case": "jobs-multi-instance-rotation",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(re-?check|re-?read|after (acquiring|taking|holding)[^.]{0,40}lock)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.019661099999999997,
+        "input_tokens": 9444,
+        "output_tokens": 1645,
+        "duration_ms": 14381,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "jobs-multi-instance-rotation",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(re-?check|re-?read|after (acquiring|taking|holding)[^.]{0,40}lock)",
+        "must_match     (?i)(concurrent|parallel|several|multiple)[^.]{0,60}(callers|instances|tasks|threads|requests)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0248251,
+        "input_tokens": 10821,
+        "output_tokens": 2126,
+        "duration_ms": 25147,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "operations-consumer-readiness",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(alert|page|notif\\w*)[^.]{0,60}(owner|team|on-?call|someone)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0177881,
+        "input_tokens": 9433,
+        "output_tokens": 1277,
+        "duration_ms": 15947,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "operations-consumer-readiness",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(alert|page|notif\\w*)[^.]{0,60}(owner|team|on-?call|someone)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.020289099999999997,
+        "input_tokens": 10791,
+        "output_tokens": 1234,
+        "duration_ms": 16003,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "performance-index-verify-after",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0160411,
+        "input_tokens": 9426,
+        "output_tokens": 932,
+        "duration_ms": 13698,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "performance-index-verify-after",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0189251,
+        "input_tokens": 10793,
+        "output_tokens": 963,
+        "duration_ms": 12537,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "testing-regression-test-evidence",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.015536099999999999,
+        "input_tokens": 9433,
+        "output_tokens": 824,
+        "duration_ms": 10776,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "testing-regression-test-evidence",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0199161,
+        "input_tokens": 10808,
+        "output_tokens": 1154,
+        "duration_ms": 13362,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "verification-migration-evidence",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0160011,
+        "input_tokens": 9434,
+        "output_tokens": 921,
+        "duration_ms": 12183,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "verification-migration-evidence",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0206171,
+        "input_tokens": 10797,
+        "output_tokens": 1299,
+        "duration_ms": 16924,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "verification-not-run-is-not-pass",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(unverified|not verified|could not (be )?verif|no evidence)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0207767,
+        "input_tokens": 30063,
+        "output_tokens": 1053,
+        "duration_ms": 12066,
+        "turns": 3
+      },
+      "trial": 2
+    },
+    {
+      "case": "verification-not-run-is-not-pass",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018238099999999997,
+        "input_tokens": 10794,
+        "output_tokens": 826,
+        "duration_ms": 9728,
+        "turns": 1
+      },
+      "trial": 2
+    },
+    {
+      "case": "architecture-async-notification",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)outbox"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0164031,
+        "input_tokens": 9431,
+        "output_tokens": 1004,
+        "duration_ms": 12295,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "architecture-async-notification",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)outbox"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0190941,
+        "input_tokens": 10789,
+        "output_tokens": 999,
+        "duration_ms": 13556,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "architecture-cache-obligations",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(stampede|thundering|cache miss)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.015164100000000002,
+        "input_tokens": 9424,
+        "output_tokens": 758,
+        "duration_ms": 10392,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "architecture-cache-obligations",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)stale",
+        "must_match     (?i)(stampede|thundering|cache miss)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018523099999999997,
+        "input_tokens": 10801,
+        "output_tokens": 879,
+        "duration_ms": 12036,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "architecture-local-invariant",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(single|one|local)\\s+(database\\s+)?transaction"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0152771,
+        "input_tokens": 9430,
+        "output_tokens": 779,
+        "duration_ms": 10119,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "architecture-local-invariant",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.018555099999999998,
+        "input_tokens": 10794,
+        "output_tokens": 889,
+        "duration_ms": 10055,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "architecture-premature-distribution",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)modular monolith",
+        "must_match     (?i)(trigger|when|once|until)[^.]{0,80}(scale|traffic|team|independent|load)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.015987099999999997,
+        "input_tokens": 9451,
+        "output_tokens": 907,
+        "duration_ms": 12474,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "architecture-premature-distribution",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.019235099999999998,
+        "input_tokens": 10820,
+        "output_tokens": 1009,
+        "duration_ms": 12771,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-external-link-two-factor",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(first|initial)[^.]{0,40}(link|sign-?in|time)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.017400099999999998,
+        "input_tokens": 9437,
+        "output_tokens": 1193,
+        "duration_ms": 15797,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-external-link-two-factor",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(first|initial)[^.]{0,40}(link|sign-?in|time)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0182701,
+        "input_tokens": 10802,
+        "output_tokens": 822,
+        "duration_ms": 10685,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-external-link-unconfirmed",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(unconfirmed|unverified|not (yet )?(confirmed|verified)|EmailConfirmed|(local|existing)[^.]{0,80}(email|account)[^.]{0,80}(verified|confirmed))",
+        "must_match     (?i)(\\bsub\\b|subject|provider key|ProviderKey)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0157901,
+        "input_tokens": 9419,
+        "output_tokens": 885,
+        "duration_ms": 11982,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-external-link-unconfirmed",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(unconfirmed|unverified|not (yet )?(confirmed|verified)|EmailConfirmed|(local|existing)[^.]{0,80}(email|account)[^.]{0,80}(verified|confirmed))",
+        "must_match     (?i)(\\bsub\\b|subject|provider key|ProviderKey)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0180781,
+        "input_tokens": 10783,
+        "output_tokens": 796,
+        "duration_ms": 10321,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-key-rotation-retention",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)encryption key[^.]{0,160}(35|longer than|outlive|at least)[^.]{0,80}(refresh|30)",
+        "must_match     (?i)(cache|IOptionsMonitor)[^.]{0,100}(invalidat|clear|remove)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0206281,
+        "input_tokens": 9434,
+        "output_tokens": 1844,
+        "duration_ms": 18374,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-key-rotation-retention",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)encryption key[^.]{0,160}(35|longer than|outlive|at least)[^.]{0,80}(refresh|30)",
+        "must_match     (?i)(cache|IOptionsMonitor)[^.]{0,100}(invalidat|clear|remove)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0220631,
+        "input_tokens": 10804,
+        "output_tokens": 1583,
+        "duration_ms": 19774,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-keys-at-rest",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)((production)[^.]{0,80}(require|fail|refuse|must)|(require|fail|refuse)[^.]{0,80}production)",
+        "must_match     (?i)((existing|legacy|plaintext)[^.]{0,60}(migrat|re-?encrypt|upgrade|convert)|(migrat|re-?encrypt|upgrade|convert)[^.]{0,60}(existing|legacy|plaintext))"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0197901,
+        "input_tokens": 9420,
+        "output_tokens": 1683,
+        "duration_ms": 20372,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-keys-at-rest",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)((production)[^.]{0,80}(require|fail|refuse|must)|(require|fail|refuse)[^.]{0,80}production)",
+        "must_match     (?i)((existing|legacy|plaintext)[^.]{0,60}(migrat|re-?encrypt|upgrade|convert)|(migrat|re-?encrypt|upgrade|convert)[^.]{0,60}(existing|legacy|plaintext))"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0213961,
+        "input_tokens": 10783,
+        "output_tokens": 1459,
+        "duration_ms": 18150,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-password-change-sessions",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(second|other|another)\\s+(browser|session|client|device)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0175861,
+        "input_tokens": 9422,
+        "output_tokens": 1244,
+        "duration_ms": 15188,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "auth-password-change-sessions",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(second|other|another)\\s+(browser|session|client|device)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.021028099999999997,
+        "input_tokens": 10788,
+        "output_tokens": 1382,
+        "duration_ms": 17423,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "backend-parameterized-query",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.025262900000000005,
+        "input_tokens": 50591,
+        "output_tokens": 1402,
+        "duration_ms": 20231,
+        "turns": 5
+      },
+      "trial": 3
+    },
+    {
+      "case": "backend-parameterized-query",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     @\\w+"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0302274,
+        "input_tokens": 48183,
+        "output_tokens": 1524,
+        "duration_ms": 20108,
+        "turns": 7
+      },
+      "trial": 3
+    },
+    {
+      "case": "boundary-webhook-payment-notification",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(untrusted|do(n.t| not) (just )?trust|(can.?not|can.t|never) (just )?trust|not trusted|before it is trusted|only.{0,20}from the verified)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0161581,
+        "input_tokens": 9421,
+        "output_tokens": 963,
+        "duration_ms": 11963,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "boundary-webhook-payment-notification",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(untrusted|do(n.t| not) (just )?trust|(can.?not|can.t|never) (just )?trust|not trusted|before it is trusted|only.{0,20}from the verified)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0183131,
+        "input_tokens": 10791,
+        "output_tokens": 845,
+        "duration_ms": 11114,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "concurrency-check-then-act",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0156061,
+        "input_tokens": 9434,
+        "output_tokens": 841,
+        "duration_ms": 9481,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "concurrency-check-then-act",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0206581,
+        "input_tokens": 10795,
+        "output_tokens": 1307,
+        "duration_ms": 14768,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "database-migration-rename-column",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0171461,
+        "input_tokens": 9427,
+        "output_tokens": 1150,
+        "duration_ms": 13455,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "database-migration-rename-column",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(data loss|lose|destroy|drop)[^.]{0,80}(column|data|names)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0214461,
+        "input_tokens": 10792,
+        "output_tokens": 1464,
+        "duration_ms": 17552,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "destructive-bulk-delete-department",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0164431,
+        "input_tokens": 9413,
+        "output_tokens": 1021,
+        "duration_ms": 12792,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "destructive-bulk-delete-department",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0189971,
+        "input_tokens": 10790,
+        "output_tokens": 980,
+        "duration_ms": 12971,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "frontend-server-client-boundary",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0163031,
+        "input_tokens": 9427,
+        "output_tokens": 981,
+        "duration_ms": 10349,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "frontend-server-client-boundary",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0205491,
+        "input_tokens": 10795,
+        "output_tokens": 1282,
+        "duration_ms": 14574,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "frontend-server-state",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     use(Query|SuspenseQuery)\\("
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0204618,
+        "input_tokens": 29296,
+        "output_tokens": 1152,
+        "duration_ms": 14541,
+        "turns": 3
+      },
+      "trial": 3
+    },
+    {
+      "case": "frontend-server-state",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     use(Query|SuspenseQuery)\\("
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.03947439999999999,
+        "input_tokens": 89772,
+        "output_tokens": 1783,
+        "duration_ms": 23610,
+        "turns": 11
+      },
+      "trial": 3
+    },
+    {
+      "case": "jobs-multi-instance-rotation",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(concurrent|parallel|several|multiple)[^.]{0,60}(callers|instances|tasks|threads|requests)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0194331,
+        "input_tokens": 9445,
+        "output_tokens": 1599,
+        "duration_ms": 15853,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "jobs-multi-instance-rotation",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(concurrent|parallel|several|multiple)[^.]{0,60}(callers|instances|tasks|threads|requests)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.021564100000000003,
+        "input_tokens": 10803,
+        "output_tokens": 1481,
+        "duration_ms": 16260,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "operations-consumer-readiness",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(alert|page|notif\\w*)[^.]{0,60}(owner|team|on-?call|someone)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0171021,
+        "input_tokens": 9425,
+        "output_tokens": 1143,
+        "duration_ms": 14096,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "operations-consumer-readiness",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(alert|page|notif\\w*)[^.]{0,60}(owner|team|on-?call|someone)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0196401,
+        "input_tokens": 10789,
+        "output_tokens": 1105,
+        "duration_ms": 15046,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "performance-index-verify-after",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.015572099999999998,
+        "input_tokens": 9429,
+        "output_tokens": 838,
+        "duration_ms": 11035,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "performance-index-verify-after",
+      "variant": "harness",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(EXPLAIN|re-?run|measure|profil)[^.]{0,60}(after|again|once more|post)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0189871,
+        "input_tokens": 10794,
+        "output_tokens": 975,
+        "duration_ms": 13885,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "testing-regression-test-evidence",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0160871,
+        "input_tokens": 9431,
+        "output_tokens": 938,
+        "duration_ms": 11629,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "testing-regression-test-evidence",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0184651,
+        "input_tokens": 10795,
+        "output_tokens": 868,
+        "duration_ms": 10982,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "verification-migration-evidence",
+      "variant": "bare",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.015416100000000002,
+        "input_tokens": 9434,
+        "output_tokens": 804,
+        "duration_ms": 10652,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "verification-migration-evidence",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0206711,
+        "input_tokens": 10794,
+        "output_tokens": 1311,
+        "duration_ms": 16642,
+        "turns": 1
+      },
+      "trial": 3
+    },
+    {
+      "case": "verification-not-run-is-not-pass",
+      "variant": "bare",
+      "status": "fail",
+      "failed_checks": [
+        "must_match     (?i)(unverified|not verified|could not (be )?verif|no evidence)"
+      ],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0191199,
+        "input_tokens": 39372,
+        "output_tokens": 618,
+        "duration_ms": 7896,
+        "turns": 4
+      },
+      "trial": 3
+    },
+    {
+      "case": "verification-not-run-is-not-pass",
+      "variant": "harness",
+      "status": "pass",
+      "failed_checks": [],
+      "meta": {
+        "model": "claude-haiku-4-5-20251001",
+        "cost_usd": 0.0171481,
+        "input_tokens": 10789,
+        "output_tokens": 610,
+        "duration_ms": 7311,
+        "turns": 1
+      },
+      "trial": 3
+    }
+  ]
+}

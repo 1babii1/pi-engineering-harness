@@ -14,6 +14,9 @@
   (a conditional sentence; "a problem the database already solves" read as "the lock solves it"). 9 verdicts
   flipped fail -> pass, in both variants alike. Only false negatives were hunted, so pass rates may be slightly
   optimistic.
+- Reports now count single-turn runs (the agent read no file) and warn when the harness variant mostly saw only
+  AGENTS.md. First baseline committed: `evals/results/2026-09-23-claude-haiku/` (Haiku, 3 trials): 24/66 vs 28/66,
+  not significant, and 60 of 66 harness runs read no harness file. Read its `NOTES.md` before citing anything.
 - The task preamble now allows a short snippet where code is the answer (two cases grade literal code).
 
 ## 4.8.1
