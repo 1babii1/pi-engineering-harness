@@ -54,8 +54,11 @@ DEFAULT_DENY_PATTERNS = [
 # Bash commands that read environment/secret state directly, regardless of path arguments.
 BASH_DENY_PATTERNS = [
     # `env` used as a dump: nothing (or only -0/--null) follows it. `env FOO=1 cmd` / `env -i cmd` run a
-    # command and are fine. Wrappers (sudo, time, ...), an absolute path and quotes (bash -c "env") count.
-    r"(^|[;&|(\"'`]\s*)(sudo\s+|time\s+|command\s+|exec\s+|nohup\s+)*([A-Za-z_]\w*=\S*\s+)*(/\S*/)?env(\s+(-0|--null))*\s*($|[;&|)\"'`])",
+    # command and are fine. Wrappers (sudo, time, ...) and an absolute path count. A quote is NOT a
+    # command start on its own (`grep -w "env" f`, `git commit -m "env"` are just text); it only is
+    # right after `sh -c` (next pattern).
+    r"(^|[;&|(`]\s*)(sudo\s+|time\s+|command\s+|exec\s+|nohup\s+)*([A-Za-z_]\w*=\S*\s+)*(/\S*/)?env(\s+(-0|--null))*\s*($|[;&|)`])",
+    r"\b(ba|z|da)?sh\s+-c\s+[\"']\s*(sudo\s+|time\s+|command\s+|exec\s+|nohup\s+)*([A-Za-z_]\w*=\S*\s+)*(/\S*/)?env(\s+(-0|--null))*\s*[;&|\"']",
     r"\bprintenv\b",
     r"(^|[;&|(\"'`]\s*)export\s*($|[;&|)\"'`])",   # bare `export` lists everything, like export -p
     r"\bexport\s+-p\b",
