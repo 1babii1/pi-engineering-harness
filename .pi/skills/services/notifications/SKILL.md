@@ -1,5 +1,5 @@
 ---
-name: notification-service
+name: pi-notification-service
 description: Use when designing email, SMS, push, in-app notification systems.
 ---
 # Notification Service Blueprint

@@ -3,6 +3,12 @@
 Claude Code reads `CLAUDE.md`, not `AGENTS.md`, so the installer writes a `CLAUDE.md` whose first
 line is `@AGENTS.md` (the import syntax) and nothing else that duplicates rules.
 
+Every harness skill is named `pi-<name>` (for example `pi-testing`, `pi-security`): Claude Code puts all skills,
+from every source, in one flat namespace, and bare names such as `testing` or `docker` collided with the user's
+other skill sets. Upgrading from 4.9.x or earlier: `install.sh --agent claude` moves the old bare-name mirrors
+into `.harness/backup/<timestamp>/` when they are byte-identical to what the harness wrote, and leaves and
+reports any same-named skill it did not write. The paths under `.pi/skills/` and the profile names do not change.
+
 Skills are different from the other adapters. Claude Code discovers skills natively from
 `.claude/skills/<name>/SKILL.md` and loads each one on demand, at runtime, based on its own
 frontmatter `description` - it never reads `.pi/skills/`. `install.sh --agent claude`
@@ -34,7 +40,7 @@ strictly additive to (not a replacement for) picking a narrower or broader profi
   `export HARNESS_VERIFY_ON_STOP=1` in `.pi/project/commands.sh` (optional
   `HARNESS_VERIFY_ON_STOP_TIMEOUT`, default 300s). NOT RUN and timeouts warn but never block, and
   `stop_hook_active` prevents a retry loop.
-- `.claude/agents/independent-verifier.md`: the high-risk verifier as a real subagent (fresh
+- `.claude/agents/pi-independent-verifier.md`: the high-risk verifier as a real subagent (fresh
   context, read-only on the working tree). Its body is generated from
   `.pi/skills/workflow/independent-verifier/SKILL.md` at install time, so the procedure has one
   source. Invoke it with the scope contract, final diff and verification results only.

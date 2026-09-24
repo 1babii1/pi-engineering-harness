@@ -1,5 +1,5 @@
 ---
-name: dotnet-aspire
+name: pi-dotnet-aspire
 description: Use for .NET Aspire local orchestration, service defaults, telemetry, health checks, and distributed app composition.
 ---
 # .NET Aspire

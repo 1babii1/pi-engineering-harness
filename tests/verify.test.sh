@@ -57,7 +57,7 @@ log_has "dotnet test backend/backend.slnx --no-build" && ok "runs tests against 
 assert_out_contains "$OUT" "PASS     backend (backend)" "report lists backend as PASS"
 
 # --- backend failure ---------------------------------------------------------------------------
-DOTNET_FAIL_ON=test verify "$R"
+export DOTNET_FAIL_ON=test; verify "$R"; unset DOTNET_FAIL_ON
 assert_eq "$RC" "1" "failing dotnet test -> exit 1"
 assert_out_contains "$OUT" "FAIL     backend" "report lists backend as FAIL"
 

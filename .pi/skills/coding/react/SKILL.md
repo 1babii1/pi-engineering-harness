@@ -1,5 +1,5 @@
 ---
-name: react-frontend
+name: pi-react-frontend
 description: "Use for React/TypeScript coding rules and reviews in a repository that has this harness: Next.js App Router, Vite, TanStack Query, Zustand, shadcn/ui. End-to-end frontend work (architecture, accessibility, performance, release readiness) is orchestrated by `frontend-core`; this skill is the rule checklist it relies on."
 ---
 # React + TypeScript

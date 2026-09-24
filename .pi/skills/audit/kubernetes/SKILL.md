@@ -1,5 +1,5 @@
 ---
-name: kubernetes-audit
+name: pi-kubernetes-audit
 description: Read-only audit for Kubernetes manifests, Helm and Kustomize covering security, reliability, resources, networking and deployment safety.
 ---
 # Kubernetes Audit

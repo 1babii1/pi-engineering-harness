@@ -1,5 +1,5 @@
 ---
-name: kubernetes
+name: pi-kubernetes
 description: Use when designing or reviewing Kubernetes deployments and production container orchestration.
 ---
 # Kubernetes

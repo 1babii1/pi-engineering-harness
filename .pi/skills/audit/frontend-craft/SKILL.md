@@ -1,11 +1,11 @@
 ---
-name: frontend-craft-audit
+name: pi-frontend-craft-audit
 description: Read-only craft audit for React/TypeScript frontends - code cleanliness, idiomatic library use, render performance, and consistency. Use when the question is "is this senior-level code", not "is this correct".
 ---
 # Frontend Craft Audit
 
 Audit only. Do not modify code unless explicitly asked.
-This is not `frontend-audit`: that one asks "is it correct, accessible and safe", this one asks "is it clean, idiomatic, fast and consistent". Do not re-report correctness or a11y bugs here.
+This is not `pi-frontend-audit`: that one asks "is it correct, accessible and safe", this one asks "is it clean, idiomatic, fast and consistent". Do not re-report correctness or a11y bugs here.
 
 ## Three axes, never merged
 

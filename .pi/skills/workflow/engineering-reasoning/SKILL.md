@@ -1,5 +1,5 @@
 ---
-name: engineering-reasoning
+name: pi-engineering-reasoning
 description: Use for non-trivial design or implementation decisions. Activate relevant engineering laws from task signals, derive proof obligations, and keep reasoning proportional to risk.
 ---
 # Engineering Reasoning

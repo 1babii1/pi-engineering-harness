@@ -130,6 +130,38 @@ prune_stale() { # prune_stale <src dir> <dst dir>
   done < <(find "$2" -type f -print0 | sort -z)
 }
 
+# Upgrade from <= 4.9.x: Claude skills used to be mirrored under bare names (`testing`, `security`, ...),
+# which collided with other skill sets; they are `pi-*` now. Move each old mirror to the backup instead of
+# leaving a duplicate next to the new one. Only what the harness itself wrote is touched: the old mirror
+# must be byte-identical to the still-old .pi/skills copy (so this runs BEFORE .pi/skills is refreshed); a
+# skill of the same name that the user wrote or edited is left alone and reported.
+migrate_renamed_claude_skills() {
+  local map="$ROOT_DIR/adapters/claude/renamed-skills.txt" old path dir f
+  [[ -f "$map" ]] || return 0
+  while read -r old _ path; do
+    [[ -z "$old" || "$old" == \#* ]] && continue
+    dir="$TARGET/.claude/skills/$old"
+    [[ -f "$dir/SKILL.md" ]] || continue
+    if cmp -s "$dir/SKILL.md" "$TARGET/.pi/skills/$path/SKILL.md"; then
+      while IFS= read -r -d '' f; do
+        backup "$f"
+        run rm -f "$f"
+        removed+=("${f#"$TARGET"/}")
+      done < <(find "$dir" -type f -print0 | sort -z)
+      run find "$dir" -depth -type d -empty -delete
+    else
+      kept+=(".claude/skills/$old (not from this harness or edited; left in place - remove it by hand if pi-$old replaces it)")
+    fi
+  done < "$map"
+  f="$TARGET/.claude/agents/independent-verifier.md"
+  if [[ -f "$f" ]] && grep -qx 'name: independent-verifier' "$f" && grep -q 'You are the independent verifier' "$f"; then
+    backup "$f"
+    run rm -f "$f"
+    removed+=(".claude/agents/independent-verifier.md")
+  fi
+}
+[[ "$AGENT" != claude ]] || migrate_renamed_claude_skills
+
 place "$ROOT_DIR/AGENTS.md" "$TARGET/AGENTS.md" entry
 place_tree "$ROOT_DIR/.pi/prompts" "$TARGET/.pi/prompts" managed
 place_tree "$ROOT_DIR/.pi/references" "$TARGET/.pi/references" managed
@@ -165,7 +197,7 @@ case "$AGENT" in
       awk 'BEGIN{n=0} /^---$/ && n<2 {n++; next} n>=2' "$ROOT_DIR/.pi/skills/workflow/independent-verifier/SKILL.md"
     } > "$agent_tmp"
     chmod 644 "$agent_tmp"   # mktemp creates 0600 and place() preserves the mode
-    place "$agent_tmp" "$TARGET/.claude/agents/independent-verifier.md" managed
+    place "$agent_tmp" "$TARGET/.claude/agents/pi-independent-verifier.md" managed
     rm -f "$agent_tmp"
 
     # Merge hooks into an existing settings.json instead of replacing it (permissions etc. survive).

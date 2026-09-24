@@ -1,5 +1,5 @@
 ---
-name: verification
+name: pi-verification
 description: Use after implementation and before claiming completion. Select the smallest deterministic verification that covers the change.
 ---
 # Verification

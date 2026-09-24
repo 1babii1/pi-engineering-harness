@@ -158,5 +158,5 @@ Require:
 - proof obligations written down and each matched to evidence
 - negative tests (the attack, the failure, the wrong actor), not only the happy path
 - a rollback or roll-forward statement for anything persistent or deployed
-- an independent fresh-context review (`independent-verifier`) before completion
+- an independent fresh-context review (`pi-independent-verifier`) before completion
 - an explicit list of what remains unverified

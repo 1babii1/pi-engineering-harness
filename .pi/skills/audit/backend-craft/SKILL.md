@@ -1,11 +1,11 @@
 ---
-name: backend-craft-audit
+name: pi-backend-craft-audit
 description: Read-only craft audit for .NET backends - code cleanliness, idiomatic library use, performance, and cross-service consistency. Use when the question is "is this senior-level code", not "is this correct".
 ---
 # Backend Craft Audit
 
 Audit only. Do not modify code unless explicitly asked.
-This is not `backend-audit`: that one asks "is it correct and safe", this one asks "is it clean, idiomatic, fast and consistent". Do not re-report correctness or security bugs here.
+This is not `pi-backend-audit`: that one asks "is it correct and safe", this one asks "is it clean, idiomatic, fast and consistent". Do not re-report correctness or security bugs here.
 
 ## Three axes, never merged
 

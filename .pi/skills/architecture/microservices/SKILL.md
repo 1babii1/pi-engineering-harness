@@ -1,5 +1,5 @@
 ---
-name: microservices
+name: pi-microservices
 description: Use for service decomposition, cross-service workflows, event-driven design, and microservice patterns.
 ---
 # Microservices

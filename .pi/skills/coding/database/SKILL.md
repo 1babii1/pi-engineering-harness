@@ -1,5 +1,5 @@
 ---
-name: database-postgres
+name: pi-database-postgres
 description: "Use for PostgreSQL, Npgsql, Dapper, and EF Core rules: SQL design, indexes and ORDER BY direction, migrations, transactions, query reviews. Whole data-layer work (caching, backups, PII retention, tenancy) belongs to `data-core`."
 ---
 # PostgreSQL / Dapper / PostGIS

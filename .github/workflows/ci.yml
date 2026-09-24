@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shellcheck
+        run: >
+          shellcheck -x -S warning install.sh eval.sh
+          scripts/*.sh hooks/*.sh evals/runners/*.sh tests/*.sh
+
+      - name: python syntax
+        run: python3 -m py_compile evals/run.py evals/bench.py hooks/guard-secrets.py adapters/claude/merge-settings.py
+
+      # structure, case lint, grader self-test, and every shell suite in tests/. No model is called:
+      # evals/bench.py (the paid agent benchmark) is exercised only through stub runners.
+      - name: eval.sh regression
+        run: ./eval.sh regression

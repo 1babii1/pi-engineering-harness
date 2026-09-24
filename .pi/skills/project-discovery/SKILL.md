@@ -1,5 +1,5 @@
 ---
-name: project-discovery
+name: pi-project-discovery
 description: Use when onboarding to a repository, refreshing project context, or before a large cross-cutting change.
 ---
 # Project Discovery

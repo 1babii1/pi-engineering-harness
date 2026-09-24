@@ -1,5 +1,5 @@
 ---
-name: system-design
+name: pi-system-design
 description: Use for architecture decisions, scaling, service boundaries, APIs, storage, caching, messaging, and production design.
 ---
 # System Design

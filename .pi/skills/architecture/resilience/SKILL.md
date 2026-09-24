@@ -1,5 +1,5 @@
 ---
-name: resilience
+name: pi-resilience
 description: Use for timeouts, retries, circuit breakers, bulkheads, queues, rate limits, and failure handling.
 ---
 # Resilience

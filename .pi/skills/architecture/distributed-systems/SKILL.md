@@ -1,5 +1,5 @@
 ---
-name: distributed-systems
+name: pi-distributed-systems
 description: Use for replication, partitioning, consistency, queues, streams, distributed data, and DDIA-style trade-offs.
 ---
 # Distributed Systems

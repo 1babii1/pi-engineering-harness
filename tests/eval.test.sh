@@ -157,6 +157,10 @@ printf -- '---\nname: testing\ndescription: "Use for tests: quoted colon is fine
 out="$(run_in structure)"; assert_out_lacks "$out" "not valid YAML" "structure: a quoted description containing ': ' is accepted"
 cp "$ROOT_DIR/.pi/skills/coding/testing/SKILL.md" "$H/.pi/skills/coding/testing/SKILL.md"
 
+printf -- '---\nname: testing\ndescription: "Use when testing."\n---\n# x\n' > "$H/.pi/skills/coding/testing/SKILL.md"
+out="$(run_in structure)"; assert_out_contains "$out" "must start with 'pi-'" "structure: an unprefixed skill name is flagged"
+cp "$ROOT_DIR/.pi/skills/coding/testing/SKILL.md" "$H/.pi/skills/coding/testing/SKILL.md"
+
 chmod -x "$H/install.sh"
 out="$(run_in structure)"; assert_out_contains "$out" "install.sh is not executable" "structure: a non-executable script is flagged"
 chmod +x "$H/install.sh"

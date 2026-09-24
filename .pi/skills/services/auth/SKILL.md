@@ -1,5 +1,5 @@
 ---
-name: auth-service
+name: pi-auth-service
 description: Use when designing, changing, or reviewing authentication/authorization/account services - login, registration, password reset, MFA/passkeys, sessions, OAuth2/OIDC tokens (incl. OpenIddict), external identity providers, key rotation, email change, account deletion. Owns the defect checks; `auth-core` owns the design workflow.
 ---
 # Auth Service Blueprint
@@ -89,7 +89,7 @@ Each item names the failure it prevents. Verify against the live code and instal
 Use `.pi/laws/proof-obligations.md` (credential change, external linking, token/key lifecycle,
 step-up). Require negative tests - the attacker, the wrong client, the expired/tampered token,
 the unverified email - alongside the happy path, and a real HTTP flow where runnable. High-risk:
-use `independent-verifier`.
+use `pi-independent-verifier`.
 
 References (primary): NIST SP 800-63B; OWASP Authentication, Forgot Password and Session
 Management cheat sheets; RFC 9700 (OAuth 2.0 Security BCP); OpenID Connect Core; W3C WebAuthn;

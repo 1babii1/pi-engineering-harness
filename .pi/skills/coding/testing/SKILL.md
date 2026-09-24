@@ -1,5 +1,5 @@
 ---
-name: testing
+name: pi-testing
 description: "Use when adding, reviewing, or selecting tests: proving a test can fail, seeding past boundaries, shared fixtures, failures that appear only in the full run. Test strategy, quality gates, and release verdicts belong to `qa-core`."
 ---
 # Testing

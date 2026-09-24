@@ -1,5 +1,5 @@
 ---
-name: observability
+name: pi-observability
 description: Use for logs, metrics, traces, OpenTelemetry, SLI/SLO, dashboards, and production diagnosis.
 ---
 # Observability

@@ -1,6 +1,6 @@
 ---
-name: security
-description: "Use for security review rules: input boundaries, secrets handling, OWASP concerns, security reviews. Authentication and authorization flows belong to `auth-service` (defect checks) and `auth-core` (design and hardening)."
+name: pi-security
+description: "Use for security review rules: input boundaries, secrets handling, OWASP concerns, security reviews. Authentication and authorization flows belong to `pi-auth-service` (defect checks) and `auth-core` (design and hardening)."
 ---
 # Security
 

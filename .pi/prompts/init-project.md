@@ -1,6 +1,6 @@
 # Init Project
 
-Use the `project-discovery` skill.
+Use the `pi-project-discovery` skill.
 
 Inspect this repository with a strict context budget. Do not modify product code.
 

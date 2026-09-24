@@ -1,5 +1,5 @@
 ---
-name: payment-service
+name: pi-payment-service
 description: Use when designing payment flows, payment providers, webhooks, refunds, and financial state transitions.
 ---
 # Payment Service Blueprint

@@ -1,5 +1,5 @@
 ---
-name: dotnet-backend
+name: pi-dotnet-backend
 description: "Use for C#/.NET coding rules and reviews in a repository that has this harness: endpoints, async, SQL access, validation, API contracts. End-to-end .NET backend work (architecture, hardening, production readiness) is orchestrated by `backend-core`; this skill is the rule checklist it relies on."
 ---
 # .NET Backend

@@ -1,5 +1,5 @@
 ---
-name: generic-backend
+name: pi-generic-backend
 description: Use for backend code in a stack with no dedicated coding skill installed (anything other than .NET) - general-purpose correctness/security principles that hold regardless of language or framework.
 ---
 # Generic Backend

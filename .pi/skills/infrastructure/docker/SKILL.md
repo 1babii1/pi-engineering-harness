@@ -1,5 +1,5 @@
 ---
-name: docker
+name: pi-docker
 description: Use for Dockerfiles, Compose, container builds, images, and local/prod container practices.
 ---
 # Docker

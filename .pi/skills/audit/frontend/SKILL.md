@@ -1,5 +1,5 @@
 ---
-name: frontend-audit
+name: pi-frontend-audit
 description: "Read-only production audit for React/TypeScript frontends: architecture, correctness, performance, accessibility, state and API usage."
 ---
 # Frontend Audit

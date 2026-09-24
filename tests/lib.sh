@@ -3,6 +3,7 @@
 
 PASS=0
 FAIL=0
+# shellcheck disable=SC2034  # used by the test files that source this
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 TMP_ROOT="$(mktemp -d)"
 trap 'rm -rf "$TMP_ROOT"' EXIT

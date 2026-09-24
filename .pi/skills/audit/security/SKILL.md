@@ -1,5 +1,5 @@
 ---
-name: security-audit
+name: pi-security-audit
 description: Read-only application security audit guided by OWASP-style trust-boundary analysis and concrete exploitability.
 ---
 # Security Audit

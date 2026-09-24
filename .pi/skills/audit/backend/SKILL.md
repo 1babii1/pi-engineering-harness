@@ -1,5 +1,5 @@
 ---
-name: backend-audit
+name: pi-backend-audit
 description: Read-only audit for C#/.NET, ASP.NET Core, APIs, database access, concurrency, performance, reliability and observability.
 ---
 # Backend Audit

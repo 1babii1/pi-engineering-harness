@@ -35,7 +35,7 @@ workdir="$1"; task_file="$2"
 
 raw="$(mktemp)"; trap 'rm -f "$raw"' EXIT
 args=(-p "$(cat "$task_file")"
-  --setting-sources project,local
+  --setting-sources "project,local"
   --disable-slash-commands
   --strict-mcp-config
   --tools "Read,Grep,Glob"

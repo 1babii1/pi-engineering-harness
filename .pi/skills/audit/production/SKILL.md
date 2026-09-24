@@ -1,5 +1,5 @@
 ---
-name: production-audit
+name: pi-production-audit
 description: Cross-cutting production-readiness audit covering failure modes, observability, delivery, resilience and operational safety.
 ---
 # Production Readiness Audit

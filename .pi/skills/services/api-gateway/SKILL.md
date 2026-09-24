@@ -1,5 +1,5 @@
 ---
-name: api-gateway
+name: pi-api-gateway
 description: Use for API gateway, BFF, edge routing, aggregation, and multi-service client architecture.
 ---
 # API Gateway / BFF

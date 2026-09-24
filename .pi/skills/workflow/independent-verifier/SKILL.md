@@ -1,5 +1,5 @@
 ---
-name: independent-verifier
+name: pi-independent-verifier
 description: "Use for high-risk work: auth, credentials, payments, migrations, concurrency, public contracts, distributed coordination, production infrastructure, destructive operations (see .pi/laws/signals.md \"High risk\")."
 ---
 # Independent Verifier
@@ -25,7 +25,7 @@ Do not redesign the feature unless the implementation has a concrete defect.
 
 ## How to run it
 Fresh context means no builder reasoning, only artifacts. In Claude Code use the installed
-`independent-verifier` subagent (`install.sh --agent claude` generates it from this skill; it is
+`pi-independent-verifier` subagent (`install.sh --agent claude` generates it from this skill; it is
 read-only on the working tree) or a new session; in other agents open a new thread. Give it the inputs above and the list of proof
 obligations from `.pi/work/obligations.md` if one exists. Do not pass the builder's summary of why the
 change is correct.

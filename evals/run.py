@@ -264,6 +264,10 @@ def structure_problems() -> tuple[list[str], list[str]]:
         skills[rel] = fm
         if not fm.get("name"):
             errors.append(f"skill {rel}: missing 'name' in frontmatter")
+        elif not str(fm["name"]).startswith("pi-"):
+            # Claude Code mirrors skills by name into one flat namespace shared with every other skill set
+            # the user has; an unprefixed name such as `testing` or `security` collides with theirs.
+            errors.append(f"skill {rel}: name '{fm['name']}' must start with 'pi-' (shared namespace in Claude Code)")
         description = fm.get("description", "")
         if not description:
             errors.append(f"skill {rel}: missing 'description' in frontmatter")

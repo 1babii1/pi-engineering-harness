@@ -1,5 +1,5 @@
 ---
-name: code-review
+name: pi-code-review
 description: Perform a senior/lead production code review.
 ---
 # Code Review

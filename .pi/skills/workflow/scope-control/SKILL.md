@@ -1,5 +1,5 @@
 ---
-name: scope-control
+name: pi-scope-control
 description: Use for non-trivial changes where requirements, compatibility, or change boundaries could drift during implementation.
 ---
 # Scope Control

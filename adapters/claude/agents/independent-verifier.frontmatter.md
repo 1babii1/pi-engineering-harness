@@ -1,5 +1,5 @@
 ---
-name: independent-verifier
+name: pi-independent-verifier
 description: Fresh-context reviewer for high-risk changes (auth, credentials, payments, migrations, concurrency, public contracts, distributed coordination, production infrastructure, destructive operations). Give it the scope contract, the final diff, and the verification results - never your own explanation of why the change is correct.
 tools: Read, Grep, Glob, Bash
 ---

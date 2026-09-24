@@ -107,7 +107,7 @@ for r in claude codex pi; do
     ok "$r runner 'info' skipped ($r CLI not installed here)"
   fi
 done
-rc=0; PI_RUN_CMD= "$ROOT_DIR/evals/runners/pi.sh" "$D" "$D/ok.sh" >/dev/null 2>&1 || rc=$?
+rc=0; PI_RUN_CMD="" "$ROOT_DIR/evals/runners/pi.sh" "$D" "$D/ok.sh" >/dev/null 2>&1 || rc=$?
 assert_eq "$rc" "2" "the pi runner refuses to guess an invocation when PI_RUN_CMD is unset"
 
 finish

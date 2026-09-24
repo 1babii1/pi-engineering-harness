@@ -1,5 +1,5 @@
 ---
-name: background-jobs
+name: pi-background-jobs
 description: Use for workers, queues, scheduled jobs, long-running processing, and retryable jobs.
 ---
 # Background Jobs Blueprint

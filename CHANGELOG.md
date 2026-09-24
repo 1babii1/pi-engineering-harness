@@ -1,5 +1,54 @@
 # Changelog
 
+## 5.0.0
+Breaking: every skill is renamed with a `pi-` prefix.
+- Why: Claude Code mirrors skills by `name` into one flat namespace shared with every other skill set the user has.
+  Bare names (`testing`, `security`, `docker`, `code-review`, ...) collided with them, so which skill loaded for a
+  request was unpredictable. `eval.sh structure` now fails on an unprefixed name.
+- Not changed: paths under `.pi/skills/` (`coding/testing`), profile names, and how AGENTS.md and the laws refer to
+  skills (by path).
+- Upgrade: `install.sh --agent claude <profile>` moves each old bare-name mirror and the old
+  `.claude/agents/independent-verifier.md` into `.harness/backup/<timestamp>/`, only when it is byte-identical to
+  what the harness wrote; a same-named skill of your own is left alone and reported. Update anything of yours that
+  mentions a skill by name (prompts, other skills, `*-core` skills).
+- CI (`.github/workflows/ci.yml`): shellcheck at warning level, python compile, `./eval.sh regression`. shellcheck
+  found 8 small issues, fixed rather than silenced.
+
+| old name | new name |
+|---|---|
+| `distributed-systems` | `pi-distributed-systems` |
+| `microservices` | `pi-microservices` |
+| `resilience` | `pi-resilience` |
+| `security` | `pi-security` |
+| `system-design` | `pi-system-design` |
+| `backend-audit` | `pi-backend-audit` |
+| `backend-craft-audit` | `pi-backend-craft-audit` |
+| `frontend-audit` | `pi-frontend-audit` |
+| `frontend-craft-audit` | `pi-frontend-craft-audit` |
+| `kubernetes-audit` | `pi-kubernetes-audit` |
+| `production-audit` | `pi-production-audit` |
+| `security-audit` | `pi-security-audit` |
+| `code-review` | `pi-code-review` |
+| `database-postgres` | `pi-database-postgres` |
+| `dotnet-backend` | `pi-dotnet-backend` |
+| `generic-backend` | `pi-generic-backend` |
+| `react-frontend` | `pi-react-frontend` |
+| `testing` | `pi-testing` |
+| `dotnet-aspire` | `pi-dotnet-aspire` |
+| `docker` | `pi-docker` |
+| `kubernetes` | `pi-kubernetes` |
+| `observability` | `pi-observability` |
+| `project-discovery` | `pi-project-discovery` |
+| `api-gateway` | `pi-api-gateway` |
+| `auth-service` | `pi-auth-service` |
+| `background-jobs` | `pi-background-jobs` |
+| `notification-service` | `pi-notification-service` |
+| `payment-service` | `pi-payment-service` |
+| `verification` | `pi-verification` |
+| `engineering-reasoning` | `pi-engineering-reasoning` |
+| `independent-verifier` | `pi-independent-verifier` |
+| `scope-control` | `pi-scope-control` |
+
 ## 4.9.0
 - `evals/bench.py` + `evals/runners/{claude,codex,pi}.sh`: run every eval case with a real agent, bare vs harness,
   graded by the existing deterministic graders; cost and error accounting, budget cap, report. Claude is fully
